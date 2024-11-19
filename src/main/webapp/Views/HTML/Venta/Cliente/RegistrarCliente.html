@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registrar Vendedor</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+
+<body>
+    <div id="navbar"></div>
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-md-12">
+                <h1 class="text-center">Registrar cliente</h1>
+            </div>
+        </div>
+        <form id="form-cliente">
+            <div class="row">
+                <div class="col">
+                    <div class="form-group">
+                        <label for="clave">Clave</label>
+                        <input type="text" class="form-control" id="clave" placeholder="Clave"
+                            style="background-color: #f4f3f3;" disabled>
+                    </div>
+                    <hr style="border-color: #0099FF;">
+                </div>
+                <div class="col">
+                    <div class="form-group">
+                        <label for="nombre">Nombre</label>
+                        <input type="text" class="form-control" id="nombre" placeholder="Ingresa el nombre del cliente"
+                            style="background-color: #f4f3f3;">
+                    </div>
+                    <hr style="border-color: #0099FF;">
+                </div>
+            </div>
+
+            <div class="col">
+                <div class="form-group">
+                    <label for="telefono">RFC</label>
+                    <input type="text" class="form-control" id="rfc"
+                        placeholder="Ingresa el RFC del cliente" style="background-color: #f4f3f3;">
+                </div>
+                <hr style="border-color: #0099FF;">
+            </div>
+
+            <div class="row">
+                <div class="col">
+                    <div class="form-group">
+                        <label for="direccion">Dirección</label>
+                        <input type="text" class="form-control" id="direccion"
+                            placeholder="Ingresa la dirección del cliente" style="background-color: #f4f3f3;">
+                    </div>
+                    <hr style="border-color: #0099FF;">
+                </div>
+            </div>
+            </div>
+
+            <div class="text-right mt-4">
+                <a href="TablaCliente.html" class="btn btn-secondary">Cancelar</a>
+                <button type="submit" class="btn btn-primary mr-2">Agregar</button>
+            </div>
+        </form>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="../../../JS/Clientes.js"></script>
+</body>
+
+</html>
