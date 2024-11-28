@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', function() {
-  const navbarHTML = `
+const navbarHTML = `
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
       <a class="navbar-brand" href="#">METASOFT</a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -19,9 +19,15 @@ document.addEventListener('DOMContentLoaded', function() {
           <li class="nav-item">
             <a class="nav-link" href="contact.html">Empleado</a>
           </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/PSW-1.0-SNAPSHOT/Views/RRHH/Prestaciones.html">Prestaciones</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/PSW-1.0-SNAPSHOT/Views/RRHH/EmpleadoPrestacion.html">EmpleadoPrestaciones</a>
+          </li>
         </ul>
       </div>
     </nav>
   `;
-  document.getElementById('navbar').innerHTML = navbarHTML;
-});
+        document.getElementById('navbar').innerHTML = navbarHTML;
+        });
