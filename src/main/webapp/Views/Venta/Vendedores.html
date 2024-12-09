@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vendedores</title>
+    <link
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
+    <link rel="stylesheet" href="../CSS/Vendedores.css" />
+  </head>
+  <body>
+    <div id="navbar"></div>
+
+    <div class="container mt-5">
+      <h1 class="text-center">Vendedores</h1>
+      <div class="form-group input-group">
+        <input
+          type="text"
+          class="form-control"
+          id="buscar"
+          placeholder="Buscar"
+        />
+        <button class="btn btn-buscar" id="buscarBtn">
+          Buscar
+          <i class="fas fa-search"></i>
+        </button>
+      </div>
+
+      <hr class="divider" />
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Nombre</th>
+            <th scope="col">Dirección</th>
+            <th scope="col">Teléfono</th>
+            <th scope="col">Salario</th>
+            <th scope="col">Puesto</th>
+            <th scope="col">Acciones</th>
+          </tr>
+        </thead>
+        <tbody id="vendedoresTableBody">
+          <!-- Los vendedores se agregarán aquí dinámicamente -->
+        </tbody>
+      </table>
+
+      <div class="text-right">
+        <button
+          class="btn btn-agregar"
+          data-toggle="modal"
+          data-target="#modalRegistrar"
+        >
+          <i class="fas fa-plus"></i> Agregar
+        </button>
+      </div>
+    </div>
+
+    <!-- Modal Registrar -->
+    <div
+      class="modal fade"
+      id="modalRegistrar"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="modalRegistrarLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="modalRegistrarLabel">
+              Registrar Vendedor
+            </h5>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <form id="formRegistrar">
+            <div class="modal-body">
+              <!-- Campos de formulario -->
+              <div class="form-group">
+                <label for="nombreRegistrar">Nombre</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="nombreRegistrar"
+                  required
+                />
+              </div>
+              <div class="form-group">
+                <label for="direccionRegistrar">Dirección</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="direccionRegistrar"
+                  required
+                />
+              </div>
+              <div class="form-group">
+                <label for="telefonoRegistrar">Teléfono</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="telefonoRegistrar"
+                  required
+                />
+              </div>
+              <div class="form-group">
+                <label for="salarioRegistrar">Salario</label>
+                <input
+                  type="number"
+                  class="form-control"
+                  id="salarioRegistrar"
+                  required
+                />
+              </div>
+              <div class="form-group">
+                <label for="puestoRegistrar">Puesto</label>
+                <select class="form-control" id="puestoRegistrar" required>
+                  <option value="">Seleccione un puesto</option>
+                </select>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-secondary"
+                data-dismiss="modal"
+              >
+                Cancelar
+              </button>
+              <button type="submit" class="btn btn-primary">Registrar</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal Actualizar -->
+    <div
+      class="modal fade"
+      id="modalActualizar"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="modalActualizarLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="modalActualizarLabel">
+              Actualizar Vendedor
+            </h5>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <form id="formActualizar">
+            <div class="modal-body">
+              <!-- Campos de formulario -->
+              <input type="hidden" id="claveActualizar" />
+              <div class="form-group">
+                <label for="nombreActualizar">Nombre</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="nombreActualizar"
+                  required
+                />
+              </div>
+              <div class="form-group">
+                <label for="direccionActualizar">Dirección</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="direccionActualizar"
+                  required
+                />
+              </div>
+              <div class="form-group">
+                <label for="telefonoActualizar">Teléfono</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="telefonoActualizar"
+                  required
+                />
+              </div>
+              <div class="form-group">
+                <label for="salarioActualizar">Salario</label>
+                <input
+                  type="number"
+                  class="form-control"
+                  id="salarioActualizar"
+                  required
+                />
+              </div>
+              <div class="form-group">
+                <label for="puestoActualizar">Puesto</label>
+                <select class="form-control" id="puestoActualizar" required>
+                  <option value="">Seleccione un puesto</option>
+                </select>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-secondary"
+                data-dismiss="modal"
+              >
+                Cancelar
+              </button>
+              <button type="submit" class="btn btn-primary">Actualizar</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal Confirmar Eliminación -->
+    <div
+      class="modal fade"
+      id="modalEliminar"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="modalEliminarLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="modalEliminarLabel">
+              Confirmar Eliminación
+            </h5>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <p>¿Está seguro de que desea eliminar este vendedor?</p>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-dismiss="modal"
+            >
+              Cancelar
+            </button>
+            <button type="button" class="btn btn-danger" id="confirmarEliminar">
+              Eliminar
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="../JS/Vendedores.js"></script>
+    <script src="../JS/NavBar.js"></script>
+  </body>
+</html>
