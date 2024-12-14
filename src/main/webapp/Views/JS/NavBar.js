@@ -21,20 +21,66 @@ document.addEventListener('DOMContentLoaded', function() {
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav">
+                    <!-- Principal -->
                     <li class="nav-item">
                         <a class="nav-link" href="${basePath}/Views/Principal/Principal.html">Inicio</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="${basePath}/Views/Venta/Piezas.html">Piezas</a>
+
+                    <!-- Manufactura -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="manufacturaDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Manufactura
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="manufacturaDropdown">
+                            <a class="dropdown-item" href="${basePath}/Views/Manufactura/Manufactura.html">Manufactura</a>
+                            <a class="dropdown-item" href="${basePath}/Views/Manufactura/Proveedor.html">Proveedor</a>
+                            <a class="dropdown-item" href="${basePath}/Views/Manufactura/ProveedorMaterial.html">Proveedor-Material</a>
+                        </div>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="${basePath}/Views/Venta/Producto.html">Producto</a>
+
+                    <!-- Material -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="materialDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Material
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="materialDropdown">
+                            <a class="dropdown-item" href="${basePath}/Views/Material/Materiales.html">Materiales</a>
+                        </div>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="${basePath}/Views/RRHH/Prestaciones.html">Prestaciones</a>
+
+                    <!-- RRHH -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="rrhhDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Recursos Humanos
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="rrhhDropdown">
+                            <a class="dropdown-item" href="${basePath}/Views/RRHH/EmpleadoPrestacion.html">Empleado Prestaciones</a>
+                            <a class="dropdown-item" href="${basePath}/Views/RRHH/Prestaciones.html">Prestaciones</a>
+                        </div>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="${basePath}/Views/RRHH/EmpleadoPrestacion.html">Empleado Prestaciones</a>
+
+                    <!-- Venta -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="ventaDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Venta
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="ventaDropdown">
+                            <a class="dropdown-item" href="${basePath}/Views/Venta/Piezas.html">Piezas</a>
+                            <a class="dropdown-item" href="${basePath}/Views/Venta/Productos.html">Productos</a>
+                            <a class="dropdown-item" href="${basePath}/Views/Venta/Clientes.html">Clientes</a>
+                            <a class="dropdown-item" href="${basePath}/Views/Venta/Vendedores.html">Vendedores</a>
+                            <a class="dropdown-item" href="${basePath}/Views/Venta/Ventas.html">Ventas</a>
+                        </div>
+                    </li>
+
+                    <!-- Obrero -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="obreroDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Obrero
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="obreroDropdown">
+                            <a class="dropdown-item" href="${basePath}/Views/Obrero/Asistencias.html">Asistencias</a>
+                        </div>
                     </li>
                 </ul>
             </div>
