@@ -9,69 +9,285 @@
     <link rel="stylesheet" href="../CSS/Piezas.css">
 </head>
 <body>
-    <div id="navbar"></div>
-    <div class="container mt-5">
-        <div class="row">
-            <div class="col-md-12">
-                <h1 class="text-center">Gestión de Material</h1>
-            </div>
-        </div>
-
-        <div class="form-group input-group mt-4">
-            <input type="text" class="form-control" id="buscar" placeholder="Ingrese la clave del material">
-            <button class="btn btn-primary ml-2">
-                Buscar
-                <i class="fas fa-search"></i>
-            </button>
-        </div>
-
-        <hr class="divider">
-
-        <table class="table table-striped">
-            <thead class="thead-dark">
-                <tr>
-                    <th scope="col">Clave</th>
-                    <th scope="col">Nombre</th>
-                    <th scope="col">Existencia</th>
-                    <th scope="col">Unidad de Medida</th>
-                    <th scope="col">Descripción</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>001</td>
-                    <td>Madera</td>
-                    <td>50</td>
-                    <td>Unidades</td>
-                    <td>Madera para construcción</td>
-                </tr>
-                <tr>
-                    <td>002</td>
-                    <td>Acero</td>
-                    <td>100</td>
-                    <td>Kilogramos</td>
-                    <td>Acero inoxidable</td>
-                </tr>
-            </tbody>
-        </table>
-
-        <!-- Botones de acciones -->
-        <div class="text-right mt-4">
-            <a href="/PSW/Views/Material/RegistroMaterial.html" class="btn btn-success">
-                <i class="fas fa-plus"></i> Agregar
-            </a>
-            <a href="/PSW/Views/Material/EditarMaterial.html" class="btn btn-info">
-                <i class="fas fa-edit"></i> Editar
-            </a>
-            <button class="btn btn-danger">
-                <i class="fas fa-trash"></i> Eliminar
-            </button>
+  <div id="navbar"></div>
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-12">
+            <h1 class="text-center">Gestión de Material</h1>
         </div>
     </div>
+
+    <div class="form-group input-group">
+        <input type="text" class="form-control" id="buscar" placeholder="Buscar Material">
+        <button class="btn btn-buscar">
+            Buscar
+            <i class="fas fa-search"></i>
+        </button>
+    </div>
+
+    <hr class="divider">
+
+    <table class="table" id="materialTable">
+        <thead>
+            <tr class="table-row">
+                <th scope="col">ID</th>
+                <th scope="col">Nombre</th>
+                <th scope="col">Categoría</th>
+                <th scope="col">Cantidad</th>
+                <th scope="col">Precio Unitario</th>
+            </tr>
+        </thead>
+        <tbody id="tableBody">
+            <!-- Filas dinámicas irán aquí -->
+        </tbody>
+    </table>
+
+    <div class="text-right">
+        <button class="btn btn-agregar" data-toggle="modal" data-target="#addModal">
+            <i class="fas fa-plus"></i> Agregar
+        </button>
+        <button class="btn btn-editar" onclick="openEditModal()" disabled>
+            <i class="fas fa-edit"></i> Editar
+        </button>
+        <button class="btn btn-danger btn-eliminar" onclick="deleteRow()" disabled>
+            <i class="fas fa-trash"></i> Eliminar
+        </button>
+    </div>
+</div>
+
+<!-- Modal de Agregar -->
+<div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="addModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addModalLabel">Agregar Nuevo Material</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="addForm">
+                    <div class="form-group">
+                        <label for="addNombre">Nombre</label>
+                        <input type="text" class="form-control" id="addNombre" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="addCategoria">Categoría</label>
+                        <input type="text" class="form-control" id="addCategoria" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="addCantidad">Cantidad</label>
+                        <input type="number" class="form-control" id="addCantidad" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="addPrecio">Precio Unitario</label>
+                        <input type="number" class="form-control" id="addPrecio" step="0.01" required>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-primary" onclick="saveNewMaterial()">Guardar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal de Edición -->
+<div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editModalLabel">Editar Material</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="editForm">
+                    <div class="form-group">
+                        <label for="id">ID</label>
+                        <input type="text" class="form-control" id="id" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label for="nombre">Nombre</label>
+                        <input type="text" class="form-control" id="nombre">
+                    </div>
+                    <div class="form-group">
+                        <label for="categoria">Categoría</label>
+                        <input type="text" class="form-control" id="categoria">
+                    </div>
+                    <div class="form-group">
+                        <label for="cantidad">Cantidad</label>
+                        <input type="number" class="form-control" id="cantidad">
+                    </div>
+                    <div class="form-group">
+                        <label for="precio">Precio Unitario</label>
+                        <input type="number" class="form-control" id="precio" step="0.01">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-primary" onclick="saveChanges()">Guardar Cambios</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal de Confirmación -->
+<div class="modal fade" id="deleteConfirmModal" tabindex="-1" aria-labelledby="deleteConfirmModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteConfirmModalLabel">Confirmar Eliminación</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                ¿Estás seguro de que deseas eliminar el material seleccionado?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-danger" onclick="confirmDelete()">Eliminar</button>
+            </div>
+        </div>
+    </div>
+</div>
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="../JS/NavBar.js"></script>
 </body>
+
+<script>
+    // Simulated database
+let materials = [
+    { id: 1, name: 'Madera', category: 'Construcción', quantity: 50, price: 100.0 },
+    { id: 2, name: 'Clavos', category: 'Ferretería', quantity: 500, price: 0.5 },
+    { id: 3, name: 'Cemento', category: 'Construcción', quantity: 30, price: 250.0 },
+];
+
+// Render materials in the table
+function renderMaterials() {
+    const tableBody = document.getElementById('tableBody');
+    tableBody.innerHTML = '';
+    materials.forEach((material) => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td>${material.id}</td>
+            <td>${material.name}</td>
+            <td>${material.category}</td>
+            <td>${material.quantity}</td>
+            <td>${material.price.toFixed(2)}</td>
+        `;
+        row.addEventListener('click', () => selectRow(row, material.id));
+        tableBody.appendChild(row);
+    });
+}
+
+// Select a row
+let selectedMaterialId = null;
+function selectRow(row, id) {
+    document.querySelectorAll('#tableBody tr').forEach((tr) => tr.classList.remove('selected'));
+    row.classList.add('selected');
+    selectedMaterialId = id;
+    document.querySelector('.btn-editar').disabled = false;
+    document.querySelector('.btn-eliminar').disabled = false;
+}
+
+// Add new material
+function saveNewMaterial() {
+    const name = document.getElementById('addNombre').value;
+    const category = document.getElementById('addCategoria').value;
+    const quantity = parseInt(document.getElementById('addCantidad').value);
+    const price = parseFloat(document.getElementById('addPrecio').value);
+
+    if (name && category && quantity && price) {
+        const newMaterial = {
+            id: materials.length ? materials[materials.length - 1].id + 1 : 1,
+            name,
+            category,
+            quantity,
+            price,
+        };
+        materials.push(newMaterial);
+        renderMaterials();
+        $('#addModal').modal('hide');
+    }
+}
+
+// Open edit modal
+function openEditModal() {
+    const material = materials.find((m) => m.id === selectedMaterialId);
+    if (material) {
+        document.getElementById('id').value = material.id;
+        document.getElementById('nombre').value = material.name;
+        document.getElementById('categoria').value = material.category;
+        document.getElementById('cantidad').value = material.quantity;
+        document.getElementById('precio').value = material.price;
+        $('#editModal').modal('show');
+    }
+}
+
+// Save changes after editing
+function saveChanges() {
+    const id = parseInt(document.getElementById('id').value);
+    const name = document.getElementById('nombre').value;
+    const category = document.getElementById('categoria').value;
+    const quantity = parseInt(document.getElementById('cantidad').value);
+    const price = parseFloat(document.getElementById('precio').value);
+
+    const materialIndex = materials.findIndex((m) => m.id === id);
+    if (materialIndex > -1) {
+        materials[materialIndex] = { id, name, category, quantity, price };
+        renderMaterials();
+        $('#editModal').modal('hide');
+    }
+}
+
+// Delete material
+function deleteRow() {
+    $('#deleteConfirmModal').modal('show');
+}
+
+// Confirm delete
+function confirmDelete() {
+    materials = materials.filter((m) => m.id !== selectedMaterialId);
+    renderMaterials();
+    selectedMaterialId = null;
+    document.querySelector('.btn-editar').disabled = true;
+    document.querySelector('.btn-eliminar').disabled = true;
+    $('#deleteConfirmModal').modal('hide');
+}
+
+// Search materials
+document.getElementById('buscar').addEventListener('input', (e) => {
+    const query = e.target.value.toLowerCase();
+    const filteredMaterials = materials.filter((m) =>
+        m.name.toLowerCase().includes(query) ||
+        m.category.toLowerCase().includes(query)
+    );
+    const tableBody = document.getElementById('tableBody');
+    tableBody.innerHTML = '';
+    filteredMaterials.forEach((material) => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td>${material.id}</td>
+            <td>${material.name}</td>
+            <td>${material.category}</td>
+            <td>${material.quantity}</td>
+            <td>${material.price.toFixed(2)}</td>
+        `;
+        row.addEventListener('click', () => selectRow(row, material.id));
+        tableBody.appendChild(row);
+    });
+});
+
+// Initial rendering
+renderMaterials();
+
+</script>
 </html>

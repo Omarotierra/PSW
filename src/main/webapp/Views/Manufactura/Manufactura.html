@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Gestión de Procesos de Manufactura</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../CSS/NavBar.css" rel="stylesheet">
+    <link href="../CSS/Manufactura.css" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+</head>
+<body>
+    <div id="navbar"></div>
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-md-12">
+                <h1 class="text-center">Gestión de Procesos de Manufactura</h1>
+            </div>
+        </div>
+
+        <div class="form-group input-group">
+            <input type="text" class="form-control" id="buscar" placeholder="Buscar">
+            <button class="btn btn-buscar">
+                Buscar 
+                <i class="fas fa-search"></i>
+            </button>
+        </div>
+
+        <hr class="divider">
+
+        <table class="table" id="manufacturaTable">
+            <thead>
+                <tr class="table-row">
+                    <th scope="col">Clave</th>
+                    <th scope="col">Nombre del Proceso</th>
+                    <th scope="col">Duración</th>
+                    <th scope="col">Costo</th>
+                </tr>
+            </thead>
+            <tbody id="tableBody">
+                <!-- Filas dinámicas irán aquí -->
+            </tbody>
+        </table>
+
+        <div class="text-right">
+            <button class="btn btn-agregar" data-toggle="modal" data-target="#addModal">
+                <i class="fas fa-plus"></i> Agregar
+            </button>
+            <button class="btn btn-editar" onclick="openEditModal()" disabled>
+                <i class="fas fa-edit"></i> Editar
+            </button>
+            <button class="btn btn-danger btn-eliminar" onclick="deleteRow()" disabled>
+                <i class="fas fa-trash"></i> Eliminar
+            </button>
+        </div>
+    </div>
+
+    <!-- Modal de Agregar -->
+    <div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="addModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addModalLabel">Agregar Nuevo Proceso</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="addForm">
+                        <div class="form-group">
+                            <label for="addNombre">Nombre del Proceso</label>
+                            <input type="text" class="form-control" id="addNombre" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="addDuracion">Duración</label>
+                            <input type="text" class="form-control" id="addDuracion" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="addCosto">Costo</label>
+                            <input type="text" class="form-control" id="addCosto" required>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                    <button type="button" class="btn btn-primary" onclick="saveNewProceso()">Guardar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Edición -->
+    <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editModalLabel">Editar Proceso</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="editForm">
+                        <div class="form-group">
+                            <label for="clave">Clave</label>
+                            <input type="text" class="form-control" id="clave" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label for="nombre">Nombre del Proceso</label>
+                            <input type="text" class="form-control" id="nombre">
+                        </div>
+                        <div class="form-group">
+                            <label for="duracion">Duración</label>
+                            <input type="text" class="form-control" id="duracion">
+                        </div>
+                        <div class="form-group">
+                            <label for="costo">Costo</label>
+                            <input type="text" class="form-control" id="costo">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                    <button type="button" class="btn btn-primary" onclick="saveChanges()">Guardar Cambios</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="../JS/NavBar.js"></script>
+    <script src="../JS/Manufactura.js"></script>
+</body>
+</html>
+
+<script>
+    // JavaScript para la gestión de Manufactura
+
+// Datos de ejemplo iniciales (puedes reemplazarlos con datos obtenidos de una API o base de datos)
+let procesos = [
+    { id: 1, nombre: "Corte", descripcion: "Corte inicial de material", duracion: 30 },
+    { id: 2, nombre: "Ensamblaje", descripcion: "Montaje de piezas", duracion: 60 },
+];
+
+// Referencias a elementos del DOM
+const tablaProcesos = document.getElementById('tabla-procesos');
+const formulario = document.getElementById('formulario-manufactura');
+const inputNombre = document.getElementById('nombre-proceso');
+const inputDescripcion = document.getElementById('descripcion-proceso');
+const inputDuracion = document.getElementById('duracion-proceso');
+const btnGuardar = document.getElementById('btn-guardar');
+
+let editandoProcesoId = null;
+
+// Función para renderizar la tabla
+function renderizarTabla() {
+    tablaProcesos.innerHTML = '';
+    procesos.forEach((proceso) => {
+        const fila = document.createElement('tr');
+        fila.innerHTML = `
+            <td>${proceso.id}</td>
+            <td>${proceso.nombre}</td>
+            <td>${proceso.descripcion}</td>
+            <td>${proceso.duracion} mins</td>
+            <td>
+                <button class="btn-editar" onclick="editarProceso(${proceso.id})">Editar</button>
+                <button class="btn-eliminar" onclick="eliminarProceso(${proceso.id})">Eliminar</button>
+            </td>
+        `;
+        tablaProcesos.appendChild(fila);
+    });
+}
+
+// Función para agregar o editar un proceso
+function guardarProceso(event) {
+    event.preventDefault();
+    const nombre = inputNombre.value;
+    const descripcion = inputDescripcion.value;
+    const duracion = parseInt(inputDuracion.value);
+
+    if (editandoProcesoId) {
+        const proceso = procesos.find((p) => p.id === editandoProcesoId);
+        proceso.nombre = nombre;
+        proceso.descripcion = descripcion;
+        proceso.duracion = duracion;
+        editandoProcesoId = null;
+    } else {
+        const nuevoProceso = {
+            id: procesos.length ? procesos[procesos.length - 1].id + 1 : 1,
+            nombre,
+            descripcion,
+            duracion,
+        };
+        procesos.push(nuevoProceso);
+    }
+
+    formulario.reset();
+    renderizarTabla();
+}
+
+// Función para editar un proceso existente
+function editarProceso(id) {
+    const proceso = procesos.find((p) => p.id === id);
+    if (proceso) {
+        inputNombre.value = proceso.nombre;
+        inputDescripcion.value = proceso.descripcion;
+        inputDuracion.value = proceso.duracion;
+        editandoProcesoId = id;
+    }
+}
+
+// Función para eliminar un proceso
+function eliminarProceso(id) {
+    procesos = procesos.filter((p) => p.id !== id);
+    renderizarTabla();
+}
+
+// Eventos
+formulario.addEventListener('submit', guardarProceso);
+
+// Renderizar la tabla al cargar
+renderizarTabla();
+
+</script>

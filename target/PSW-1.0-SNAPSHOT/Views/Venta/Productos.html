@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Productos</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="../CSS/Productos.css">
+</head>
+<body>
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-md-12">
+                <h1 class="text-center">Productos</h1>
+            </div>
+        </div>
+
+        <div class="form-group input-group">
+            <input type="text" class="form-control" id="buscar" placeholder="Buscar">
+            <button class="btn btn-primary" onclick="searchProduct()">
+                Buscar 
+                <i class="fas fa-search"></i>
+            </button>
+        </div>
+
+        <hr class="divider">
+        <table class="table" id="productosTable">
+            <thead>
+                <tr>
+                    <th scope="col">Clave</th>
+                    <th scope="col">Descripción</th>
+                    <th scope="col">Precio</th>
+                    <th scope="col">Cantidad</th>
+                </tr>
+            </thead>
+            <tbody id="tableBody">
+            </tbody>
+        </table>
+
+        <div class="text-right">            
+            <button class="btn btn-agregar" data-toggle="modal" data-target="#addModal">
+                <i class="fas fa-plus"></i> Agregar Producto
+            </button>
+            <button class="btn btn-editar" onclick="openEditModal()" id="editBtn" disabled>
+                <i class="fas fa-edit"></i> Editar
+            </button>
+            <button class="btn btn-info" onclick="viewPiezas()" disabled id="viewPiezasBtn">Ver Piezas</button>
+            <button class="btn btn-danger btn-eliminar" onclick="deleteRow()" id="deleteBtn" disabled>
+                <i class="fas fa-trash"></i> Eliminar
+            </button>
+        </div>
+    </div>
+
+    <!-- Modal de Agregar Producto -->
+    <div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="addModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addModalLabel">Agregar Nuevo Producto</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="addForm">
+                        <div class="form-group">
+                            <label for="addClave">Clave</label>
+                            <input type="text" class="form-control" id="addClave" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="addDescripcion">Descripción</label>
+                            <input type="text" class="form-control" id="addDescripcion" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="addPrecio">Precio</label>
+                            <input type="text" class="form-control" id="addPrecio" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="addCantidad">Cantidad</label>
+                            <input type="number" class="form-control" id="addCantidad" required>
+                        </div>
+
+                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addPiecesModal" onclick="loadPiezasTable()">Agregar Piezas</button>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                    <button type="button" class="btn btn-primary" onclick="saveNewProducto()">Guardar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Piezas de Producto -->
+    <div class="modal fade" id="addPiecesModal" tabindex="-1" aria-labelledby="addPiecesModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addPiecesModalLabel">Piezas del Producto</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <table class="table" id="piezasList">
+                        <thead>
+                            <tr>
+                                <th>Descripción</th>
+                                <th>Precio</th>
+                                <th>Acción</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Piezas disponibles irán aquí -->
+                        </tbody>
+                    </table>
+                    <table class="table" id="selectedPiezasTable">
+                        <thead>
+                            <tr>
+                                <th>Pieza Seleccionada</th>
+                                <th>Acción</th>
+                            </tr>
+                        </thead>
+                        <tbody id="selectedPiezasList">
+                            <!-- Piezas seleccionadas para el producto irán aquí -->
+                        </tbody>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                    <button type="button" class="btn btn-primary" onclick="savePiezas()">Guardar Piezas</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <script>
+        let piezasData = [
+            {id: "1", descripcion: "Pieza A", precio: "$500"},
+            {id: "2", descripcion: "Pieza B", precio: "$700"},
+            {id: "3", descripcion: "Pieza C", precio: "$1000"}
+        ];
+
+        let productosData = [
+            {clave: "P001", descripcion: "Producto A", precio: "$500", cantidad: 10, piezas: ["1", "2"]},
+            {clave: "P002", descripcion: "Producto B", precio: "$1000", cantidad: 5, piezas: ["3"]},
+            {clave: "P003", descripcion: "Producto C", precio: "$1500", cantidad: 3, piezas: ["1"]}
+        ];
+
+        let selectedPiezas = [];
+        let currentProductoIndex = null;
+
+        function loadTable() {
+            const tableBody = document.getElementById('tableBody');
+            tableBody.innerHTML = ''; // Limpiar la tabla antes de volver a llenarla
+            productosData.forEach((producto) => {
+                const row = document.createElement('tr');
+                row.onclick = () => selectRow(producto.clave, row);
+                row.className = 'table-row';
+                row.innerHTML = `
+                    <th scope="row">${producto.clave}</th>
+                    <td>${producto.descripcion}</td>
+                    <td>${producto.precio}</td>
+                    <td>${producto.cantidad}</td>
+                `;
+                tableBody.appendChild(row);
+            });
+        }
+
+        function loadPiezasTable() {
+            const tableBody = document.getElementById('piezasList');
+            tableBody.innerHTML = '';
+            piezasData.forEach((pieza) => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${pieza.descripcion}</td>
+                    <td>${pieza.precio}</td>
+                    <td>
+                        <button class="btn btn-success" onclick="addPieza('${pieza.id}')">Agregar</button>
+                    </td>
+                `;
+                tableBody.appendChild(row);
+            });
+        }
+
+        function loadSelectedPiezas() {
+            const tableBody = document.getElementById('selectedPiezasList');
+            tableBody.innerHTML = '';
+            selectedPiezas.forEach((pieza) => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${pieza.descripcion}</td>
+                    <td>
+                        <button class="btn btn-danger" onclick="removePieza('${pieza.id}')">Eliminar</button>
+                    </td>
+                `;
+                tableBody.appendChild(row);
+            });
+        }
+
+        function addPieza(id) {
+            const pieza = piezasData.find(p => p.id === id);
+            selectedPiezas.push(pieza);
+            loadSelectedPiezas();
+        }
+
+        function removePieza(id) {
+            selectedPiezas = selectedPiezas.filter(pieza => pieza.id !== id);
+            loadSelectedPiezas();
+        }
+
+        function saveNewProducto() {
+            const clave = document.getElementById('addClave').value;
+            const descripcion = document.getElementById('addDescripcion').value;
+            const precio = document.getElementById('addPrecio').value;
+            const cantidad = document.getElementById('addCantidad').value;
+
+            const newProducto = {
+                clave: clave,
+                descripcion: descripcion,
+                precio: precio,
+                cantidad: cantidad,
+                piezas: selectedPiezas.map(pieza => pieza.id)
+            };
+
+            productosData.push(newProducto);
+            loadTable();
+            $('#addModal').modal('hide');
+        }
+
+      /*  function selectRow(clave, row) {
+            const editBtn = document.getElementById('editBtn');
+            const deleteBtn = document.getElementById('deleteBtn');
+            const viewPiezasBtn = document.getElementById('viewPiezasBtn');
+            currentProductoIndex = productosData.findIndex(p => p.clave === clave);
+            editBtn.disabled = false;
+            deleteBtn.disabled = false;
+            viewPiezasBtn.disabled = false;
+        }*/
+        function selectRow(clave, row) {
+    // Selecciona todas las filas de la tabla
+    const rows = document.querySelectorAll('#productosTable tbody tr');
+    
+    // Elimina la clase 'table-active' de todas las filas
+    rows.forEach(r => r.classList.remove('table-active'));
+
+    // Agrega la clase 'table-active' a la fila seleccionada
+    row.classList.add('table-active');
+
+    // Encuentra el índice del producto usando la clave
+    currentProductoIndex = productosData.findIndex(p => p.clave === clave);
+
+    // Habilita los botones de acción
+    const editBtn = document.getElementById('editBtn');
+    const deleteBtn = document.getElementById('deleteBtn');
+    const viewPiezasBtn = document.getElementById('viewPiezasBtn');
+
+    editBtn.disabled = false;
+    deleteBtn.disabled = false;
+    viewPiezasBtn.disabled = false;
+}
+
+
+        function deleteRow() {
+            if (currentProductoIndex !== null) {
+                productosData.splice(currentProductoIndex, 1);
+                loadTable();
+            }
+        }
+
+        function openEditModal() {
+            const producto = productosData[currentProductoIndex];
+            document.getElementById('addClave').value = producto.clave;
+            document.getElementById('addDescripcion').value = producto.descripcion;
+            document.getElementById('addPrecio').value = producto.precio;
+            document.getElementById('addCantidad').value = producto.cantidad;
+            $('#addModal').modal('show');
+        }
+
+        function viewPiezas() {
+            if (currentProductoIndex !== null) {
+                selectedPiezas = productosData[currentProductoIndex].piezas.map(piezaId => piezasData.find(pieza => pieza.id === piezaId));
+                loadSelectedPiezas();
+                $('#addPiecesModal').modal('show');
+            }
+        }
+
+        loadTable();
+    </script>
+</body>
+</html>
