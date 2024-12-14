@@ -1,7 +1,15 @@
-document.addEventListener('DOMContentLoaded', function() { 
-    const basePath = window.location.hostname === 'localhost:8080' 
-        ? '/PSW'  // En entorno local
-        : '/PSW-1.0-SNAPSHOT'; // En entorno de producción
+document.addEventListener('DOMContentLoaded', function() {
+    let basePath = '';
+
+    if (window.location.hostname === 'localhost') {
+        if (window.location.pathname.includes('/PSW')) {
+            basePath = '/PSW';
+        } else {
+            basePath = '/PSW-1.0-SNAPSHOT'; 
+        }
+    } else {
+        basePath = window.location.pathname.split('/')[1] || ''; 
+    }
 
     const navbarHTML = `
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">

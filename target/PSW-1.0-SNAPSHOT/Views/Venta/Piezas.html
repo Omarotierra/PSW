@@ -16,7 +16,7 @@
                     <h1 class="text-center">Piezas</h1>
                 </div>
             </div>
-   <div class="form-group input-group">
+            <div class="form-group input-group">
                 <input type="text" class="form-control" id="buscar" placeholder="Buscar">
                 <button class="btn btn-buscar">
                     Buscar 
@@ -115,7 +115,7 @@
                                     <label for="categoria">Categoría</label>
                                     <input type="text" class="form-control" id="categoria">
                                 </div>
-                                  <div class="form-group">
+                                <div class="form-group">
                                     <label for="precio">Precio</label>
                                     <input type="number" class="form-control" id="precio" required>
                                 </div>
@@ -156,104 +156,104 @@
             <script src="../JS/NavBar.js"></script> 
 
             <script>
-                        // Datos de ejemplo
-                        let piezasData = [
-                            {id: "1", descripcion: "Pieza A", categoria: "Categoría 1", precio: "500"},
-                            {id: "2", descripcion: "Pieza B", categoria: "Categoría 2", precio: "1000"},
-                            {id: "3", descripcion: "Pieza C", categoria: "Categoría 3", precio: "1500"}
-                        ];
+                                // Datos de ejemplo
+                                let piezasData = [
+                                    {id: "1", descripcion: "Pieza A", categoria: "Categoría 1", precio: "500"},
+                                    {id: "2", descripcion: "Pieza B", categoria: "Categoría 2", precio: "1000"},
+                                    {id: "3", descripcion: "Pieza C", categoria: "Categoría 3", precio: "1500"}
+                                ];
 
-                        let selectedId = null;
+                                let selectedId = null;
 
-                        function loadTable() {
-                            const tableBody = document.getElementById('tableBody');
-                            tableBody.innerHTML = ''; // Limpiar la tabla antes de volver a llenarla
-                            piezasData.forEach((pieza) => {
-                                const row = document.createElement('tr');
-                                row.onclick = () => selectRow(pieza.id, row);
-                                row.className = 'table-row';
-                                row.innerHTML = `
+                                function loadTable() {
+                                    const tableBody = document.getElementById('tableBody');
+                                    tableBody.innerHTML = ''; // Limpiar la tabla antes de volver a llenarla
+                                    piezasData.forEach((pieza) => {
+                                        const row = document.createElement('tr');
+                                        row.onclick = () => selectRow(pieza.id, row);
+                                        row.className = 'table-row';
+                                        row.innerHTML = `
                             <th scope="row">${pieza.id}</th>
                             <td>${pieza.descripcion}</td>
                             <td>${pieza.categoria}</td>
                             <td>${pieza.precio}</td>
                         `;
-                                tableBody.appendChild(row);
-                            });
-                        }
+                                        tableBody.appendChild(row);
+                                    });
+                                }
 
-                        document.addEventListener('DOMContentLoaded', loadTable);
+                                document.addEventListener('DOMContentLoaded', loadTable);
 
-                        function selectRow(id, row) {
-                            const rows = document.querySelectorAll('#piezasTable tbody tr');
-                            rows.forEach(r => r.classList.remove('table-active'));
-                            row.classList.add('table-active');
-                            selectedId = id;
-                            document.querySelector('.btn-editar').disabled = false;
-                            document.querySelector('.btn-eliminar').disabled = false;
-                        }
+                                function selectRow(id, row) {
+                                    const rows = document.querySelectorAll('#piezasTable tbody tr');
+                                    rows.forEach(r => r.classList.remove('table-active'));
+                                    row.classList.add('table-active');
+                                    selectedId = id;
+                                    document.querySelector('.btn-editar').disabled = false;
+                                    document.querySelector('.btn-eliminar').disabled = false;
+                                }
 
-                        function saveNewPieza() {
-                            const descripcion = document.getElementById('addDescripcion').value;
-                            const categoria = document.getElementById('addCategoria').value;
-                            const precio = document.getElementById('addPrecio').value;
+                                function saveNewPieza() {
+                                    const descripcion = document.getElementById('addDescripcion').value;
+                                    const categoria = document.getElementById('addCategoria').value;
+                                    const precio = document.getElementById('addPrecio').value;
 
-                            const nuevaPieza = {
-                                id: `${piezasData.length + 1}`,
-                                descripcion,
-                                categoria,
-                                precio
-                            };
+                                    const nuevaPieza = {
+                                        id: `${piezasData.length + 1}`,
+                                        descripcion,
+                                        categoria,
+                                        precio
+                                    };
 
-                            piezasData.push(nuevaPieza);
-                            loadTable();
-                            $('#addModal').modal('hide');
-                            document.getElementById('addDescripcion').value = '';
-                            document.getElementById('addCategoria').value = '';
-                            document.getElementById('addPrecio').value = '';
-                        }
+                                    piezasData.push(nuevaPieza);
+                                    loadTable();
+                                    $('#addModal').modal('hide');
+                                    document.getElementById('addDescripcion').value = '';
+                                    document.getElementById('addCategoria').value = '';
+                                    document.getElementById('addPrecio').value = '';
+                                }
 
-                        function openEditModal() {
-                            if (selectedId === null) {
-                                return;
-                            }
-                            const pieza = piezasData.find(p => p.id === selectedId);
-                            document.getElementById('id').value = pieza.id;
-                            document.getElementById('descripcion').value = pieza.descripcion;
-                            document.getElementById('categoria').value = pieza.categoria;
-                            document.getElementById('precio').value = pieza.precio;
-                            $('#editModal').modal('show');
-                        }
+                                function openEditModal() {
+                                    if (selectedId === null) {
+                                        return;
+                                    }
+                                    const pieza = piezasData.find(p => p.id === selectedId);
+                                    document.getElementById('id').value = pieza.id;
+                                    document.getElementById('descripcion').value = pieza.descripcion;
+                                    document.getElementById('categoria').value = pieza.categoria;
+                                    document.getElementById('precio').value = pieza.precio;
+                                    $('#editModal').modal('show');
+                                }
 
-                        function saveChanges() {
-                            const id = document.getElementById('id').value;
-                            const descripcion = document.getElementById('descripcion').value;
-                            const categoria = document.getElementById('categoria').value;
-                            const precio = document.getElementById('precio').value;
+                                function saveChanges() {
+                                    const id = document.getElementById('id').value;
+                                    const descripcion = document.getElementById('descripcion').value;
+                                    const categoria = document.getElementById('categoria').value;
+                                    const precio = document.getElementById('precio').value;
 
-                            const pieza = piezasData.find(p => p.id === id);
-                            pieza.descripcion = descripcion;
-                            pieza.categoria = categoria;
-                            pieza.precio = precio;
+                                    const pieza = piezasData.find(p => p.id === id);
+                                    pieza.descripcion = descripcion;
+                                    pieza.categoria = categoria;
+                                    pieza.precio = precio;
 
-                            loadTable();
-                            $('#editModal').modal('hide');
-                        }
+                                    loadTable();
+                                    $('#editModal').modal('hide');
+                                }
 
-                        function deleteRow() {
-                            $('#deleteConfirmModal').modal('show');
-                        }
+                                function deleteRow() {
+                                    $('#deleteConfirmModal').modal('show');
+                                }
 
-                        function confirmDelete() {
-                            if (selectedId === null) {
-                                return;
-                            }
-                            piezasData = piezasData.filter(p => p.id !== selectedId);
-                            loadTable();
-                            $('#deleteConfirmModal').modal('hide');
-                            document.querySelector('.btn-editar').disabled = true;
-                            document.querySelector('.btn-eliminar').disabled = true;
-                        }
+                                function confirmDelete() {
+                                    if (selectedId === null) {
+                                        return;
+                                    }
+                                    piezasData = piezasData.filter(p => p.id !== selectedId);
+                                    loadTable();
+                                    $('#deleteConfirmModal').modal('hide');
+                                    document.querySelector('.btn-editar').disabled = true;
+                                    document.querySelector('.btn-eliminar').disabled = true;
+                                }
             </script>
     </body>
 </html>

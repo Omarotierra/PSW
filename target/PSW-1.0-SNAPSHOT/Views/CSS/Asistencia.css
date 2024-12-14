@@ -1,0 +1,62 @@
+
+
+.btn-agregar {
+    background-color: #04A261;
+    color: white;
+    border: none;
+}
+
+.btn-agregar:hover {
+    background-color: #03824D; 
+}
+
+.btn-editar {
+    background-color: #0066CC;
+    color: white;
+    border: none;
+}
+
+.btn-editar:hover {
+    background-color: #0A47A1; 
+}
+
+.btn-eliminar {
+    background-color: #FF0000;
+    color: white;
+    border: none;
+}
+
+.btn-eliminar:hover {
+    background-color: #C62828;
+}
+
+/* Buscador */
+#buscar {
+    background-color: #f4f3f3;
+    border: none;
+}
+
+.btn-buscar {
+    background-color: #1565C0;
+    border: none;
+    color: #ffffff;
+    margin-left: 10px
+}
+
+.btn-buscar i {
+    color: #ffffff;
+    margin-left: 5px;
+}
+
+.btn-buscar:hover {
+    background-color: #0A47A1; 
+}
+
+.btn-buscar i:hover {
+    background-color: #0A47A1; 
+}
+
+.divider {
+    border-color: #0099FF;
+}
+
