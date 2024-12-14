@@ -1,16 +1,18 @@
 document.addEventListener('DOMContentLoaded', function() {
-    let basePath = '';
+    let basePath = '/PSW';
 
-    if (window.location.hostname === 'localhost') {
+    if (window.location.hostname === 'localhost' && window.location.port === '8080') {
         if (window.location.pathname.includes('/PSW')) {
-            basePath = '/PSW';
+            basePath = '/PSW'; 
         } else {
             basePath = '/PSW-1.0-SNAPSHOT'; 
         }
     } else {
-        basePath = window.location.pathname.split('/')[1] || ''; 
+        const pathParts = window.location.pathname.split('/');
+        basePath = `/${pathParts[1] || ''}`;
     }
 
+    // Generación del contenido del navbar
     const navbarHTML = `
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
             <a class="navbar-brand" href="#">METASOFT</a>
