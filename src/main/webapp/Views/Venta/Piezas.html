@@ -30,8 +30,9 @@
                     <tr class="table-row">
                         <th scope="col">Clave</th>
                         <th scope="col">Descripción</th>
-                        <th scope="col">Categoría</th>
-                        <th scope="col">Precio</th>
+                        <th scope="col">Existencia</th>
+                        <th scope="col">Costo</th>
+                        <th scope="col">Estado</th>
                     </tr>
                 </thead>
                 <tbody id="tableBody">
@@ -157,14 +158,31 @@
 
             <script>
                                 // Datos de ejemplo
-                                let piezasData = [
-                                    {id: "1", descripcion: "Pieza A", categoria: "Categoría 1", precio: "500"},
-                                    {id: "2", descripcion: "Pieza B", categoria: "Categoría 2", precio: "1000"},
-                                    {id: "3", descripcion: "Pieza C", categoria: "Categoría 3", precio: "1500"}
-                                ];
+                                let piezasData = [];
 
                                 let selectedId = null;
+                                const token = localStorage.getItem('token');
 
+                                function loadPiezasTable() {
+                                 fetch('http://localhost:8090/api/piezas', {
+                                        method: 'GET',
+                                        headers: {
+                                            'Authorization': `Bearer ${token}`,
+                                            'Content-Type': 'application/json'
+                                        },
+                                        credentials: 'same-origin'  // Asegura que las cookies se envíen
+                                    })
+                                            .then(response => response.json())
+                                            .then(data => {
+                                                piezasData = data;  // Asegúrate de que "data" contenga las piezas.
+                                                console.log('Piezas:', piezasData);
+                                                loadTable();  // Llama a la función para cargar los datos en la tabla
+                                            })
+                                            .catch(error => console.error('Error:', error));
+
+                                }
+
+                                document.addEventListener('DOMContentLoaded', loadPiezasTable);
                                 function loadTable() {
                                     const tableBody = document.getElementById('tableBody');
                                     tableBody.innerHTML = ''; // Limpiar la tabla antes de volver a llenarla
@@ -175,8 +193,9 @@
                                         row.innerHTML = `
                             <th scope="row">${pieza.id}</th>
                             <td>${pieza.descripcion}</td>
-                            <td>${pieza.categoria}</td>
-                            <td>${pieza.precio}</td>
+                            <td>${pieza.existencia}</td>
+                            <td>${pieza.costo}</td>
+                            <td>${pieza.estado}</td>
                         `;
                                         tableBody.appendChild(row);
                                     });
@@ -254,6 +273,33 @@
                                     document.querySelector('.btn-editar').disabled = true;
                                     document.querySelector('.btn-eliminar').disabled = true;
                                 }
+
+                                function searchPiezas() {
+                                    const searchQuery = document.getElementById('buscar').value; // Obtener texto de búsqueda
+                                    fetch('http://localhost:8090/api/piezas/1', {
+                                        method: 'GET',
+                                        headers: {
+                                            'Authorization': `Bearer ${token}`,
+                                            'Content-Type': 'application/json'  // Asegúrate de definir el tipo de contenido
+                                        }
+                                    })
+                                            .then(response => response.json())
+                                            .then(data => {
+                                                console.log(data);
+                                            })
+                                            .catch(error => console.error('Error al buscar la pieza:', error));
+
+                                }
+
+                                // Asignar la función de búsqueda al botón
+                                document.querySelector('.btn.btn-buscar').addEventListener('click', searchPiezas);
+
+                                // Función para manejar el Enter (si se presiona Enter en el campo de búsqueda)
+                                document.getElementById('buscar').addEventListener('keypress', function (event) {
+                                    if (event.key === 'Enter') {
+                                        searchPiezas();
+                                    }
+                                });
             </script>
     </body>
 </html>

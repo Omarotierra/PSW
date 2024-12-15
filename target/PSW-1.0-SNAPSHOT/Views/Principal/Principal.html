@@ -13,7 +13,7 @@
         <div class="container">
             <div class="title">METASOFT</div>
             <div class="content">
-                <img src="Venta.png" alt="Icon" class="icon">
+                <img src="https://www.metasoft.com.tr/en/img/Metasoft%20logo%20contour.png" alt="Icon" class="icon">
                 <p>
                     Somos una empresa dedicada a la satisfacción de nuestros clientes, a través de productos de alta calidad en donde contamos con las mejores marcas.
                 </p>
@@ -22,7 +22,20 @@
                 </p>
             </div>
         </div>
+
         <script src="../JS/NavBar.js"></script> 
+
+        <script>
+            // Recuperar el token del localStorage
+            const token = localStorage.getItem('token');
+
+            // Verificar si el token existe y luego mostrarlo en la consola
+            if (token) {
+                console.log('Token:', token); // Muestra el token en la consola
+            } else {
+                console.log('No se encontró el token en el localStorage');
+            }
+        </script>
     </body>
 </html>
 
