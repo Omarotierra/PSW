@@ -1,227 +1,270 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <title>Gestión de Prestaciones</title>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link rel="stylesheet" href="../CSS/Prestaciones.css"> 
-</head>
-<body>
-    <div id="navbar"></div>
-    <div class="container mt-5">
-        <div class="row">
-            <div class="col-md-12">
-                <h1 class="text-center">Gestión de prestaciones</h1>
-            </div>
-        </div>
-
-        <div class="form-group input-group">
-            <input type="text" class="form-control" id="buscar" placeholder="Buscar">
-            <button class="btn btn-buscar">
-                Buscar 
-                <i class="fas fa-search"></i>
-            </button>
-        </div>
-
-        <hr class="divider">
-        <table class="table" id="prestacionesTable">
-            <thead>
-                <tr>
-                    <th scope="col">Clave</th>
-                    <th scope="col">Descripción</th>
-                    <th scope="col">Tipo</th>
-                    <th scope="col">Monto</th>
-                </tr>
-            </thead>
-            <tbody id="tableBody">
-                <!-- Filas dinámicas irán aquí -->
-            </tbody>
-        </table>
-
-        <div class="text-right">
-            <!-- Botón de Agregar, abre el Modal -->
-            <button class="btn btn-agregar" data-toggle="modal" data-target="#addModal">
-                <i class="fas fa-plus"></i> Agregar
-            </button>
-            <button class="btn btn-editar" onclick="openEditModal()">
-                <i class="fas fa-edit"></i> Editar
-            </button>
-            <button class="btn btn-danger btn-eliminar" onclick="deleteRow()">
-                <i class="fas fa-trash"></i> Eliminar
-            </button>
-        </div>
-    </div>
-
-    <!-- Modal de Agregar -->
-    <div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="addModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="addModalLabel">Agregar Nueva Prestación</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <form id="addForm">
-                        <div class="form-group">
-                            <label for="addDescripcion">Descripción</label>
-                            <input type="text" class="form-control" id="addDescripcion" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="addTipo">Tipo</label>
-                            <input type="text" class="form-control" id="addTipo" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="addMonto">Monto</label>
-                            <input type="text" class="form-control" id="addMonto" required>
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                    <button type="button" class="btn btn-primary" onclick="saveNewPrestacion()">Guardar</button>
+    <head>
+        <title>Gestión de Prestaciones</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+        <link rel="stylesheet" href="../CSS/Prestaciones.css"> 
+    </head>
+    <body>
+        <div id="navbar"></div>
+        <div class="container mt-5">
+            <div class="row">
+                <div class="col-md-12">
+                    <h1 class="text-center">Gestión de prestaciones</h1>
                 </div>
             </div>
-        </div>
-    </div>
 
-    <!-- Modal de Edición -->
-    <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="editModalLabel">Editar Prestación</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <form id="editForm">
-                        <div class="form-group">
-                            <label for="clave">Clave</label>
-                            <input type="text" class="form-control" id="clave" readonly>
-                        </div>
-                        <div class="form-group">
-                            <label for="descripcion">Descripción</label>
-                            <input type="text" class="form-control" id="descripcion">
-                        </div>
-                        <div class="form-group">
-                            <label for="tipo">Tipo</label>
-                            <input type="text" class="form-control" id="tipo">
-                        </div>
-                        <div class="form-group">
-                            <label for="monto">Monto</label>
-                            <input type="text" class="form-control" id="monto">
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                    <button type="button" class="btn btn-primary" onclick="saveChanges()">Guardar Cambios</button>
-                </div>
+            <div class="form-group input-group">
+                <input type="text" class="form-control" id="buscar" placeholder="Buscar">
+                <button class="btn btn-buscar">
+                    Buscar 
+                    <i class="fas fa-search"></i>
+                </button>
             </div>
-        </div>
-    </div>
 
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <script src="../JS/NavBar.js"></script> 
-
-    <script>
-        // Datos de ejemplo
-        let prestacionesData = [
-            { clave: "1", descripcion: "Mark", tipo: "Educación", monto: "$20,000" },
-            { clave: "2", descripcion: "Jacob", tipo: "Salud", monto: "$50,000" },
-            { clave: "3", descripcion: "Larry", tipo: "Vivienda", monto: "$30,000" }
-        ];
-
-        function loadTable() {
-            const tableBody = document.getElementById('tableBody');
-            tableBody.innerHTML = ''; // Limpiar la tabla antes de volver a llenarla
-            prestacionesData.forEach((prestacion) => {
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <th scope="row">${prestacion.clave}</th>
-                    <td>${prestacion.descripcion}</td>
-                    <td>${prestacion.tipo}</td>
-                    <td>${prestacion.monto}</td>
-                `;
-                tableBody.appendChild(row);
-            });
-        }
-
-        document.addEventListener('DOMContentLoaded', loadTable);
-
-        function saveNewPrestacion() {
-            const descripcion = document.getElementById('addDescripcion').value;
-            const tipo = document.getElementById('addTipo').value;
-            const monto = document.getElementById('addMonto').value;
-
-            const nuevaPrestacion = {
-                clave: `${prestacionesData.length + 1}`,
-                descripcion,
-                tipo,
-                monto
-            };
+            <hr class="divider">
             
-            prestacionesData.push(nuevaPrestacion);
+            <table class="table" id="prestacionesTable">
+                <thead>
+                    <tr class="table-row">
+                        <th scope="col">Clave</th>
+                        <th scope="col">Descripción</th>
+                        <th scope="col">Tipo</th>
+                        <th scope="col">Monto</th>
+                    </tr>
+                </thead>
+                <tbody id="tableBody">
+                    <!-- Filas dinámicas irán aquí -->
+                </tbody>
+            </table>
 
-            // Actualizar la tabla
-            loadTable();
+            <div class="text-right">
+                <!-- Botón de Agregar, abre el Modal -->
+                <button class="btn btn-agregar" data-toggle="modal" data-target="#addModal">
+                    <i class="fas fa-plus"></i> Agregar
+                </button>
+                <button class="btn btn-editar" onclick="openEditModal()" disabled>
+                    <i class="fas fa-edit"></i> Editar
+                </button>
+                <button class="btn btn-danger btn-eliminar" onclick="deleteRow()" disabled>
+                    <i class="fas fa-trash"></i> Eliminar
+                </button>
+            </div>
+        </div>
 
-            // Cerrar el modal
-            $('#addModal').modal('hide');
+        <!-- Modal de Agregar -->
+        <div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="addModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="addModalLabel">Agregar Nueva Prestación</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="addForm">
+                            <div class="form-group">
+                                <label for="addDescripcion">Descripción</label>
+                                <input type="text" class="form-control" id="addDescripcion" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="addTipo">Tipo</label>
+                                <input type="text" class="form-control" id="addTipo" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="addMonto">Monto</label>
+                                <input type="text" class="form-control" id="addMonto" required>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                        <button type="button" class="btn btn-primary" onclick="saveNewPrestacion()">Guardar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-            // Limpiar los campos del formulario
-            document.getElementById('addDescripcion').value = '';
-            document.getElementById('addTipo').value = '';
-            document.getElementById('addMonto').value = '';
-        }
+        <!-- Modal de Edición -->
+        <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="editModalLabel">Editar Prestación</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="editForm">
+                            <div class="form-group">
+                                <label for="clave">Clave</label>
+                                <input type="text" class="form-control" id="clave" readonly>
+                            </div>
+                            <div class="form-group">
+                                <label for="descripcion">Descripción</label>
+                                <input type="text" class="form-control" id="descripcion">
+                            </div>
+                            <div class="form-group">
+                                <label for="tipo">Tipo</label>
+                                <input type="text" class="form-control" id="tipo">
+                            </div>
+                            <div class="form-group">
+                                <label for="monto">Monto</label>
+                                <input type="text" class="form-control" id="monto">
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                        <button type="button" class="btn btn-primary" onclick="saveChanges()">Guardar Cambios</button>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-        function openEditModal() {
-            const clave = prompt("Ingrese la clave de la prestación a editar:");
-            const index = prestacionesData.findIndex(item => item.clave === clave);
-            if (index !== -1) {
-                const prestacion = prestacionesData[index];
-                document.getElementById('clave').value = prestacion.clave;
-                document.getElementById('descripcion').value = prestacion.descripcion;
-                document.getElementById('tipo').value = prestacion.tipo;
-                document.getElementById('monto').value = prestacion.monto;
+        <!-- Modal de Confirmación -->
+        <div class="modal fade" id="deleteConfirmModal" tabindex="-1" aria-labelledby="deleteConfirmModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="deleteConfirmModalLabel">Confirmar Eliminación</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        ¿Estás seguro de que deseas eliminar la prestación seleccionada?
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                        <button type="button" class="btn btn-danger" onclick="confirmDelete()">Eliminar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-                $('#editModal').modal('show');
-            } else {
-                alert("Clave no encontrada");
-            }
-        }
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+        <script src="../JS/NavBar.js"></script> 
 
-        function saveChanges() {
-            const clave = document.getElementById('clave').value;
-            const descripcion = document.getElementById('descripcion').value;
-            const tipo = document.getElementById('tipo').value;
-            const monto = document.getElementById('monto').value;
+        <script>
+                        // Datos de ejemplo
+                        let prestacionesData = [
+                            {clave: "1", descripcion: "Mark", tipo: "Educación", monto: "$20,000"},
+                            {clave: "2", descripcion: "Jacob", tipo: "Salud", monto: "$50,000"},
+                            {clave: "3", descripcion: "Larry", tipo: "Vivienda", monto: "$30,000"}
+                        ];
 
-            const index = prestacionesData.findIndex(item => item.clave === clave);
-            if (index !== -1) {
-                prestacionesData[index] = { clave, descripcion, tipo, monto };
-                loadTable();
-                $('#editModal').modal('hide');
-            }
-        }
+                        let selectedClave = null;
 
-        function deleteRow() {
-            const clave = prompt("Ingrese la clave de la prestación a eliminar:");
-            const index = prestacionesData.findIndex(item => item.clave === clave);
-            if (index !== -1) {
-                prestacionesData.splice(index, 1);
-                loadTable();
-            } else {
-                alert("Clave no encontrada");
-            }
-        }
-    </script>
-</body>
+                        function loadTable() {
+                            const tableBody = document.getElementById('tableBody');
+                            tableBody.innerHTML = ''; // Limpiar la tabla antes de volver a llenarla
+                            prestacionesData.forEach((prestacion) => {
+                                const row = document.createElement('tr');
+                                row.onclick = () => selectRow(prestacion.clave, row);
+                                row.className = 'table-row';
+                                row.innerHTML = `
+                        <th scope="row">${prestacion.clave}</th>
+                        <td>${prestacion.descripcion}</td>
+                        <td>${prestacion.tipo}</td>
+                        <td>${prestacion.monto}</td>
+                    `;
+                                tableBody.appendChild(row);
+                            });
+                        }
+
+                        document.addEventListener('DOMContentLoaded', loadTable);
+
+                        function selectRow(clave, row) {
+                            const rows = document.querySelectorAll('#prestacionesTable tbody tr');
+                            rows.forEach(r => r.classList.remove('table-active'));
+                            row.classList.add('table-active');
+                            selectedClave = clave;
+                            document.querySelector('.btn-editar').disabled = false;
+                            document.querySelector('.btn-eliminar').disabled = false;
+                        }
+
+                        function saveNewPrestacion() {
+                            const descripcion = document.getElementById('addDescripcion').value;
+                            const tipo = document.getElementById('addTipo').value;
+                            const monto = document.getElementById('addMonto').value;
+
+                            const nuevaPrestacion = {
+                                clave: `${prestacionesData.length + 1}`,
+                                descripcion,
+                                tipo,
+                                monto
+                            };
+
+                            prestacionesData.push(nuevaPrestacion);
+                            loadTable();
+                            $('#addModal').modal('hide');
+                            document.getElementById('addDescripcion').value = '';
+                            document.getElementById('addTipo').value = '';
+                            document.getElementById('addMonto').value = '';
+                        }
+
+                        function openEditModal() {
+                            if (selectedClave === null) {
+                                alert("No se ha seleccionado ninguna fila");
+                                return;
+                            }
+
+                            const index = prestacionesData.findIndex(item => item.clave === selectedClave);
+                            if (index !== -1) {
+                                const prestacion = prestacionesData[index];
+                                document.getElementById('clave').value = prestacion.clave;
+                                document.getElementById('descripcion').value = prestacion.descripcion;
+                                document.getElementById('tipo').value = prestacion.tipo;
+                                document.getElementById('monto').value = prestacion.monto;
+
+                                $('#editModal').modal('show');
+                            }
+                        }
+
+                        function saveChanges() {
+                            const clave = document.getElementById('clave').value;
+                            const descripcion = document.getElementById('descripcion').value;
+                            const tipo = document.getElementById('tipo').value;
+                            const monto = document.getElementById('monto').value;
+
+                            const index = prestacionesData.findIndex(item => item.clave === clave);
+                            if (index !== -1) {
+                                prestacionesData[index] = {clave, descripcion, tipo, monto};
+                                loadTable();
+                                $('#editModal').modal('hide');
+                                selectedClave = null;
+                                document.querySelector('.btn-editar').disabled = true;
+                                document.querySelector('.btn-eliminar').disabled = true;
+                            }
+                        }
+
+                        function deleteRow() {
+                            if (selectedClave === null) {
+                                alert("Por favor, selecciona una fila para eliminar.");
+                                return;
+                            }
+                            $('#deleteConfirmModal').modal('show');
+                        }
+
+                        function confirmDelete() {
+                            const index = prestacionesData.findIndex(item => item.clave === selectedClave);
+                            if (index !== -1) {
+                                prestacionesData.splice(index, 1);
+                                loadTable();
+                                selectedClave = null;
+                                document.querySelector('.btn-editar').disabled = true;
+                                document.querySelector('.btn-eliminar').disabled = true;
+                            }
+                            $('#deleteConfirmModal').modal('hide');
+                        }
+        </script>
+    </body>
 </html>

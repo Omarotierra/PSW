@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Gestión de Proveedores</title>
+        <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+        <link rel="stylesheet" href="../CSS/Manufactura.css">
+    </head>
+    <body>
+        <div id="navbar"></div>
+        <div class="container mt-5">
+            <div class="row">
+                <div class="col-md-12">
+                    <h1 class="text-center">Proveedores</h1>
+                </div>
+            </div>
+            <div class="form-group input-group">
+                <input type="text" class="form-control" id="buscar" placeholder="Buscar">
+                <button class="btn btn-buscar">
+                    Buscar 
+                    <i class="fas fa-search"></i>
+                </button>
+            </div>
+            <hr class="divider">
+
+            <table class="table" id="proveedoresTable">
+                <thead>
+                    <tr class="table-row">
+                        <th scope="col">Clave</th>
+                        <th scope="col">Nombre</th>
+                        <th scope="col">Dirección</th>
+                        <th scope="col">RFC</th>
+                        <th scope="col">Correos</th>
+                        <th scope="col">Teléfonos</th>
+                    </tr>
+                </thead>
+                <tbody id="tableBody">
+                    <!-- Filas dinámicas irán aquí -->
+                </tbody>
+            </table>
+
+            <!-- Botones de acciones -->
+            <div class="d-flex justify-content-between mt-3">
+                <!-- Botón Proveedor Material -->
+                <button class="btn btn-info" onclick="window.location.href = 'ProveedorMaterial.html'">
+                    <i class="fas fa-warehouse"></i> Proveedor Material
+                </button>
+
+                <!-- Botones Agregar, Editar, Eliminar -->
+                <div>
+                    <button class="btn btn-agregar" data-toggle="modal" data-target="#addModal">
+                        <i class="fas fa-plus"></i> Agregar
+                    </button>
+                    <button class="btn btn-editar" onclick="openEditModal()" id="editBtn" disabled>
+                        <i class="fas fa-edit"></i> Editar
+                    </button>
+                    <button class="btn btn-eliminar" onclick="deleteRow()" id="deleteBtn" disabled>
+                        <i class="fas fa-trash"></i> Eliminar
+                    </button>
+                </div>
+            </div>
+
+            <!-- Modal de Agregar Proveedor -->
+            <div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="addModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="addModalLabel">Agregar Nuevo Proveedor</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <form id="addForm">
+                                <div class="form-group">
+                                    <label for="addClave">Clave</label>
+                                    <input type="text" class="form-control" id="addClave" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="addNombre">Nombre</label>
+                                    <input type="text" class="form-control" id="addNombre" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="addDireccion">Dirección</label>
+                                    <input type="text" class="form-control" id="addDireccion" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="addRfc">RFC</label>
+                                    <input type="text" class="form-control" id="addRfc" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="addCorreos">Correos Electrónicos</label>
+                                    <input type="text" class="form-control" id="addCorreos" placeholder="Correo1, Correo2...">
+                                </div>
+                                <div class="form-group">
+                                    <label for="addTelefonos">Teléfonos</label>
+                                    <input type="text" class="form-control" id="addTelefonos" placeholder="Teléfono1, Teléfono2...">
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                            <button type="button" class="btn btn-primary" onclick="saveNewProveedor()">Guardar Proveedor</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal de Edición -->
+            <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="editModalLabel">Editar Proveedor</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <form id="editForm">
+                                <div class="form-group">
+                                    <label for="id">Clave</label>
+                                    <input type="text" class="form-control" id="id" readonly>
+                                </div>
+                                <div class="form-group">
+                                    <label for="nombre">Nombre</label>
+                                    <input type="text" class="form-control" id="nombre">
+                                </div>
+                                <div class="form-group">
+                                    <label for="direccion">Dirección</label>
+                                    <input type="text" class="form-control" id="direccion">
+                                </div>
+                                <div class="form-group">
+                                    <label for="rfc">RFC</label>
+                                    <input type="text" class="form-control" id="rfc">
+                                </div>
+                                <div class="form-group">
+                                    <label for="correos">Correos Electrónicos</label>
+                                    <input type="text" class="form-control" id="correos">
+                                </div>
+                                <div class="form-group">
+                                    <label for="telefonos">Teléfonos</label>
+                                    <input type="text" class="form-control" id="telefonos">
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                            <button type="button" class="btn btn-primary" onclick="saveChanges()">Guardar Cambios</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal de Confirmación -->
+            <div class="modal fade" id="deleteConfirmModal" tabindex="-1" aria-labelledby="deleteConfirmModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="deleteConfirmModalLabel">Confirmar Eliminación</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            ¿Estás seguro de que deseas eliminar el proveedor seleccionado?
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                            <button type="button" class="btn btn-danger" onclick="confirmDelete()">Eliminar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+            <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+            <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+            <script src="../JS/NavBar.js"></script> 
+        </div>
+    </body>
+</html>

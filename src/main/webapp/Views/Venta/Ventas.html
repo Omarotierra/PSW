@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Ventas</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="../CSS/Ventas.css">
+    <style>
+    </style>
+</head>
+<body>
+    <div id="navbar"></div>
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-md-12 text-center">
+                <h1>Gestión de Ventas</h1>
+            </div>
+        </div>
+
+        <div class="form-group input-group">
+                <input type="text" class="form-control" id="buscar" placeholder="Buscar">
+                <button class="btn btn-buscar">
+                    Buscar 
+                    <i class="fas fa-search"></i>
+                </button>
+            </div>
+
+        <hr class="divider">
+        <div>
+            <table class="table" id="salesTable">
+                <thead>
+                    <tr class="table-row">
+                        <th scope="col">Clave</th>
+                        <th scope="col">Cliente</th>
+                        <th scope="col">Producto</th>
+                        <th scope="col">Monto</th>
+                        <th scope="col">Fecha</th>
+                    </tr>
+                </thead>
+                <tbody id="salesTableBody">
+                    <!-- Filas dinámicas irán aquí -->
+                </tbody>
+            </table>
+            
+            <div class="text-right">
+                <button class="btn btn-agregar" data-toggle="modal" data-target="#addSaleModal">
+                    <i class="fas fa-plus"></i> Registrar Venta
+                </button>
+                <button class="btn btn-danger" data-toggle="modal" data-target="#returnSaleModal" id="returnButton" disabled>
+                    <i class="fas fa-undo"></i> Devolución
+                </button>
+            </div>
+        </div>
+        
+        <!-- Modal de Registro de Venta -->
+        <div class="modal fade" id="addSaleModal" tabindex="-1" aria-labelledby="addSaleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="addSaleModalLabel">Registrar Nueva Venta</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="addSaleForm">
+                            <div class="form-group">
+                                <label for="addSaleClient">Cliente</label>
+                                <input type="text" class="form-control" id="addSaleClient" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="addSaleProduct">Producto</label>
+                                <input type="text" class="form-control" id="addSaleProduct" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="addSaleAmount">Monto</label>
+                                <input type="text" class="form-control" id="addSaleAmount" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="addSaleDate">Fecha</label>
+                                <input type="date" class="form-control" id="addSaleDate" required>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                        <button type="button" class="btn btn-primary" onclick="saveNewSale()">Guardar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal de Devolución -->
+        <div class="modal fade" id="returnSaleModal" tabindex="-1" aria-labelledby="returnSaleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="returnSaleModalLabel">Confirmar Devolución</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        ¿Estás seguro de que deseas devolver esta venta?
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                        <button type="button" class="btn btn-danger" onclick="confirmReturnSale()">Confirmar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+        <script src="../JS/NavBar.js"></script> 
+
+        <script>
+            let salesData = [
+                {clave: "1", client: "Carlos Pérez", product: "Laptop", amount: "$15,000", date: "2024-12-05"},
+                {clave: "2", client: "Ana Gómez", product: "Smartphone", amount: "$8,000", date: "2024-12-06"},
+                {clave: "3", client: "Luis Martínez", product: "Tablet", amount: "$6,500", date: "2024-12-07"}
+            ];
+
+            let selectedSale = null; // Variable para almacenar la venta seleccionada
+
+            function loadSalesTable() {
+                const tableBody = document.getElementById('salesTableBody');
+                tableBody.innerHTML = ''; // Limpiar la tabla antes de volver a llenarla
+                salesData.forEach((sale) => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <th scope="row">${sale.clave}</th>
+                        <td>${sale.client}</td>
+                        <td>${sale.product}</td>
+                        <td>${sale.amount}</td>
+                        <td>${sale.date}</td>
+                    `;
+                    row.addEventListener('click', function() {
+                        selectSale(row, sale.clave);
+                    });
+                    tableBody.appendChild(row);
+                });
+            }
+
+            function selectSale(row, clave) {
+                // Eliminar la clase 'selected' de todas las filas
+                const rows = document.querySelectorAll('#salesTableBody tr');
+ rows.forEach(r => r.classList.remove('table-active'));
+                            row.classList.add('table-active');
+
+                // Guardar la clave de la venta seleccionada
+                selectedSale = clave;
+
+                // Habilitar el botón de devolución
+                document.getElementById('returnButton').disabled = false;
+            }
+
+            function saveNewSale() {
+                const client = document.getElementById('addSaleClient').value;
+                const product = document.getElementById('addSaleProduct').value;
+                const amount = document.getElementById('addSaleAmount').value;
+                const date = document.getElementById('addSaleDate').value;
+
+                const newSale = {
+                    clave: `${salesData.length + 1}`,
+                    client,
+                    product,
+                    amount,
+                    date
+                };
+
+                salesData.push(newSale);
+                loadSalesTable();
+                $('#addSaleModal').modal('hide');
+                document.getElementById('addSaleForm').reset();
+            }
+
+            function confirmReturnSale() {
+                // Lógica para devolver la venta seleccionada
+                if (selectedSale) {
+                    alert(`Venta ${selectedSale} devuelta con éxito.`);
+                    // Eliminar la venta de los datos (opcional)
+                    salesData = salesData.filter(sale => sale.clave !== selectedSale);
+                    loadSalesTable();
+                }
+                $('#returnSaleModal').modal('hide');
+            }
+
+            document.addEventListener('DOMContentLoaded', loadSalesTable);
+        </script>
+    </body>
+</html>
