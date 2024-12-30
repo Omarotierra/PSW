@@ -1,269 +1,435 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <title>Gestión de Asistencia</title>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-        <link rel="stylesheet" href="../CSS/Asistencia.css"> 
-    </head>
-    <body>
-        <div id="navbar"></div>
-        <div class="container mt-5">
-            <div class="row">
-                <div class="col-md-12">
-                    <h1 class="text-center">Gestión de Asistencia</h1>
-                </div>
-            </div>
 
-            <div class="form-group input-group">
-                <input type="text" class="form-control" id="buscar" placeholder="Buscar">
-                <button class="btn btn-buscar">
-                    Buscar 
-                    <i class="fas fa-search"></i>
-                </button>
-            </div>
+<head>
+    <title>Gestión de Asistencia</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="../CSS/Asistencia.css">
+</head>
 
-            <hr class="divider">
-            
-            <table class="table" id="asistenciaTable">
-                <thead>
-                    <tr class="table-row">
-                        <th scope="col">Clave</th>
-                        <th scope="col">Fecha</th>
-                        <th scope="col">Hora</th>
-                        <th scope="col">Tipo</th>
-                    </tr>
-                </thead>
-                <tbody id="tableBody">
-                    <!-- Filas dinámicas irán aquí -->
-                </tbody>
-            </table>
-
-            <div class="text-right">
-                <!-- Botón de Agregar, abre el Modal -->
-                <button class="btn btn-agregar" data-toggle="modal" data-target="#addModal">
-                    <i class="fas fa-plus"></i> Agregar
-                </button>
-                <button class="btn btn-editar" onclick="openEditModal()" disabled>
-                    <i class="fas fa-edit"></i> Editar
-                </button>
-                <button class="btn btn-danger btn-eliminar" onclick="deleteRow()" disabled>
-                    <i class="fas fa-trash"></i> Eliminar
-                </button>
+<body>
+    <div id="navbar"></div>
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-md-12">
+                <h1 class="text-center">Gestión de Asistencia</h1>
             </div>
         </div>
 
-        <!-- Modal de Agregar -->
-        <div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="addModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="addModalLabel">Agregar Nueva Asistencia</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <form id="addForm">
-                            <div class="form-group">
-                                <label for="addFecha">Fecha</label>
-                                <input type="date" class="form-control" id="addFecha" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="addHora">Hora</label>
-                                <input type="time" class="form-control" id="addHora" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="addTipo">Tipo</label>
-                                <input type="text" class="form-control" id="addTipo" required>
-                            </div>
-                        </form>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                        <button type="button" class="btn btn-primary" onclick="saveNewAsistencia()">Guardar</button>
-                    </div>
+        <div class="form-group input-group">
+            <input type="text" class="form-control" id="buscar" placeholder="Buscar">
+            <button class="btn btn-buscar">
+                Buscar
+                <i class="fas fa-search"></i>
+            </button>
+        </div>
+
+        <hr class="divider">
+
+        <table class="table" id="asistenciaTable">
+            <thead>
+                <tr class="table-row">
+                    <th scope="col">Clave</th>
+                    <th scope="col">Clave Empleado</th>
+                    <th scope="col">Fecha</th>
+                    <th scope="col">Hora</th>
+                    <th scope="col">Tipo Asistencia</th>
+                </tr>
+            </thead>
+            <tbody id="tableBody">
+                <!-- Filas dinámicas irán aquí -->
+            </tbody>
+        </table>
+
+        <div class="text-right">
+            <!-- Botón de Agregar, abre el Modal -->
+            <button class="btn btn-agregar" data-toggle="modal" data-target="#addModal">
+                <i class="fas fa-plus"></i> Agregar
+            </button>
+            <button class="btn btn-editar" onclick="openEditModal()" disabled>
+                <i class="fas fa-edit"></i> Editar
+            </button>
+            <button class="btn btn-danger btn-eliminar" onclick="deleteRow()" disabled>
+                <i class="fas fa-trash"></i> Eliminar
+            </button>
+        </div>
+    </div>
+
+    <!-- Modal de Agregar -->
+    <div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="addModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addModalLabel">Agregar Nueva Asistencia</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="addForm">
+                        <div class="form-group">
+                            <label for="addClaveEmpleado">Clave Empleado</label>
+                            <input type="text" class="form-control" id="addClaveEmpleado" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="addFecha">Fecha</label>
+                            <input type="date" class="form-control" id="addFecha" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="addHora">Hora</label>
+                            <input type="time" class="form-control" id="addHora" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="addTipo">Tipo</label>
+                            <input type="text" class="form-control" id="addTipo" required>
+                        </div>
+
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                    <button type="button" class="btn btn-primary" onclick="saveNewAsistencia()">Guardar</button>
                 </div>
             </div>
         </div>
+    </div>
 
-        <!-- Modal de Edición -->
-        <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="editModalLabel">Editar Asistencia</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <form id="editForm">
-                            <div class="form-group">
-                                <label for="clave">Clave</label>
-                                <input type="text" class="form-control" id="clave" readonly>
-                            </div>
-                            <div class="form-group">
-                                <label for="fecha">Fecha</label>
-                                <input type="date" class="form-control" id="fecha">
-                            </div>
-                            <div class="form-group">
-                                <label for="hora">Hora</label>
-                                <input type="time" class="form-control" id="hora">
-                            </div>
-                            <div class="form-group">
-                                <label for="tipo">Tipo</label>
-                                <input type="text" class="form-control" id="tipo">
-                            </div>
-                        </form>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                        <button type="button" class="btn btn-primary" onclick="saveChanges()">Guardar Cambios</button>
-                    </div>
+    <!-- Modal de Edición -->
+    <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editModalLabel">Editar Asistencia</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="editForm">
+                        <div class="form-group">
+                            <label for="id">ID</label>
+                            <input type="text" class="form-control" id="id" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label for="claveEmpleado">Clave Empleado</label>
+                            <input type="text" class="form-control" id="claveEmpleado">
+                        </div>
+                        <div class="form-group">
+                            <label for="fecha">Fecha</label>
+                            <input type="date" class="form-control" id="fecha">
+                        </div>
+                        <div class="form-group">
+                            <label for="hora">Hora</label>
+                            <input type="time" class="form-control" id="hora">
+                        </div>
+                        <div class="form-group">
+                            <label for="tipoAsistencia">Tipo Asistencia</label>
+                            <input type="text" class="form-control" id="tipoAsistencia">
+                        </div>
+
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                    <button type="button" class="btn btn-primary" onclick="saveChanges()">Guardar Cambios</button>
                 </div>
             </div>
         </div>
+    </div>
 
-        <!-- Modal de Confirmación -->
-        <div class="modal fade" id="deleteConfirmModal" tabindex="-1" aria-labelledby="deleteConfirmModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="deleteConfirmModalLabel">Confirmar Eliminación</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        ¿Estás seguro de que deseas eliminar la asistencia seleccionada?
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                        <button type="button" class="btn btn-danger" onclick="confirmDelete()">Eliminar</button>
-                    </div>
-                </div>
+    <<!-- Modal de Confirmación -->
+<div class="modal fade" id="deleteConfirmModal" tabindex="-1" aria-labelledby="deleteConfirmModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteConfirmModalLabel">Confirmar Eliminación</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                ¿Estás seguro de que deseas eliminar la asistencia seleccionada?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal" onclick="confirmDelete()">Eliminar</button>
             </div>
         </div>
+    </div>
+</div>
 
-        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
-        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-        <script src="../JS/NavBar.js"></script> 
 
-        <script>
-            // Datos de ejemplo
-            let asistenciaData = [
-                {clave: "1", fecha: "2024-12-10", hora: "08:00", tipo: "Entrada"},
-                {clave: "2", fecha: "2024-12-10", hora: "09:00", tipo: "Salida"},
-                {clave: "3", fecha: "2024-12-10", hora: "10:00", tipo: "Entrada"}
-            ];
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="../JS/NavBar.js"></script>
+   
+    <script>
+        const apiUrl = "http://localhost:8081/api/asistencias";
+        const token = localStorage.getItem('token');
+        console.log('Token:', token);
 
-            let selectedClave = null;
+        let selectedId = null;
 
-            function loadTable() {
+        function obtenerDatos() {
+            const token = localStorage.getItem('token');
+            if (!token) {
+                console.error('No se encontró el token en el localStorage.');
+                return;
+            }
+
+            fetch('http://localhost:8081/api/asistencias', {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                }
+            })
+
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    console.log('Datos cargados:', data);
+                })
+                .catch(error => {
+                    console.error('Error al cargar los datos:', error);
+                });
+        }
+        document.addEventListener('DOMContentLoaded', obtenerDatos);
+
+        async function loadTable() {
+            try {
+                const response = await fetch(apiUrl, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    }
+                });
+                const data = await response.json();
+
                 const tableBody = document.getElementById('tableBody');
-                tableBody.innerHTML = ''; // Limpiar la tabla antes de volver a llenarla
-                asistenciaData.forEach((asistencia) => {
+                tableBody.innerHTML = '';
+
+                data.forEach((asistencia) => {
                     const row = document.createElement('tr');
                     row.onclick = () => selectRow(asistencia.clave, row);
                     row.className = 'table-row';
                     row.innerHTML = `
                         <th scope="row">${asistencia.clave}</th>
+                        <td>${asistencia.claveEmpleado}</td>
                         <td>${asistencia.fecha}</td>
                         <td>${asistencia.hora}</td>
-                        <td>${asistencia.tipo}</td>
+                        <td>${asistencia.tipoAsistencia}</td>
                     `;
                     tableBody.appendChild(row);
                 });
+            } catch (error) {
+                console.error("Error al cargar los datos:", error);
             }
+        }
 
-            document.addEventListener('DOMContentLoaded', loadTable);
+        document.addEventListener('DOMContentLoaded', loadTable);
 
-            function selectRow(clave, row) {
-                const rows = document.querySelectorAll('#asistenciaTable tbody tr');
-                rows.forEach(r => r.classList.remove('table-active'));
-                row.classList.add('table-active');
-                selectedClave = clave;
-                document.querySelector('.btn-editar').disabled = false;
-                document.querySelector('.btn-eliminar').disabled = false;
+        function selectRow(id, row) {
+            const rows = document.querySelectorAll('#asistenciaTable tbody tr');
+            rows.forEach(r => r.classList.remove('table-active'));
+            row.classList.add('table-active');
+            selectedId = id;
+            document.querySelector('.btn-editar').disabled = false;
+            document.querySelector('.btn-eliminar').disabled = false;
+        }
+
+        async function saveNewAsistencia() {
+            const nuevaAsistencia = {
+                clave: parseInt(document.getElementById('addClave').value),
+                claveEmpleado: document.getElementById('addClaveEmpleado').value,
+                fecha: document.getElementById('addFecha').value,
+                hora: document.getElementById('addHora').value + ':00',
+                tipo: document.getElementById('addTipo').value
+            };
+
+            try {
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(nuevaAsistencia)
+                });
+
+                if (response.ok) {
+                    loadTable();
+                    $('#addModal').modal('hide');
+                    document.getElementById('addForm').reset();
+                } else {
+                    console.error("Error al guardar la nueva asistencia:", response.statusText);
+                }
+            } catch (error) {
+                console.error("Error al conectar con la API:", error);
             }
+        }
 
-            function saveNewAsistencia() {
-                const fecha = document.getElementById('addFecha').value;
-                const hora = document.getElementById('addHora').value;
-                const tipo = document.getElementById('addTipo').value;
+        async function openEditModal() {
+            if (!selectedId) return;
 
-                const nuevaAsistencia = {
-                    clave: `${asistenciaData.length + 1}`,
-                    fecha,
-                    hora,
-                    tipo
-                };
+            try {
+                const response = await fetch(`${apiUrl}/${selectedId}`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    }
+                });
 
-                asistenciaData.push(nuevaAsistencia);
-                loadTable();
-                $('#addModal').modal('hide');
-                document.getElementById('addFecha').value = '';
-                document.getElementById('addHora').value = '';
-                document.getElementById('addTipo').value = '';
-            }
-
-            function openEditModal() {
-                if (selectedClave === null) {
-                    alert("No se ha seleccionado ninguna fila");
+                if (!response.ok) {
+                    console.error(`Error al obtener los datos: ${response.statusText}`);
                     return;
                 }
 
-                const index = asistenciaData.findIndex(item => item.clave === selectedClave);
-                if (index !== -1) {
-                    const asistencia = asistenciaData[index];
-                    document.getElementById('clave').value = asistencia.clave;
-                    document.getElementById('fecha').value = asistencia.fecha;
-                    document.getElementById('hora').value = asistencia.hora;
-                    document.getElementById('tipo').value = asistencia.tipo;
+                const asistencia = await response.json();
 
-                    $('#editModal').modal('show');
-                }
+                document.getElementById('clave').value = asistencia.clave;
+                document.getElementById('claveEmpleado').value = asistencia.claveEmpleado;
+                document.getElementById('fecha').value = asistencia.fecha;
+                document.getElementById('hora').value = asistencia.hora;
+                document.getElementById('tipoAsistencia').value = asistencia.tipoAsistencia;
+
+                $('#editModal').modal('show');
+            } catch (error) {
+                console.error("Error al obtener los datos de la asistencia:", error);
             }
+        }
 
-            function saveChanges() {
-                const clave = document.getElementById('clave').value;
-                const fecha = document.getElementById('fecha').value;
-                const hora = document.getElementById('hora').value;
-                const tipo = document.getElementById('tipo').value;
+        async function saveChanges() {
+            const id = document.getElementById('id').value;
+            const updatedAsistencia = {
+                claveEmpleado: document.getElementById('claveEmpleado').value,
+                fecha: document.getElementById('fecha').value,
+                hora: document.getElementById('hora').value,
+                tipo: document.getElementById('tipoAsistencia').value
+            };
 
-                const index = asistenciaData.findIndex(item => item.clave === clave);
-                if (index !== -1) {
-                    asistenciaData[index] = {clave, fecha, hora, tipo};
+            try {
+                const response = await fetch(`${apiUrl}/${id}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(updatedAsistencia)
+                });
+
+                if (response.ok) {
                     loadTable();
                     $('#editModal').modal('hide');
+                } else {
+                    console.error("Error al guardar los cambios:", response.statusText);
                 }
+            } catch (error) {
+                console.error("Error al conectar con la API:", error);
+            }
+        }
+
+        async function deleteRow() {
+            if (!selectedId) {
+                alert("Selecciona una asistencia primero.");
+                return;
             }
 
-            function deleteRow() {
-                if (selectedClave === null) {
-                    alert("No se ha seleccionado ninguna fila");
+            $('#deleteConfirmModal').modal('show');
+        }
+
+        async function confirmDelete() {
+    if (!selectedId) return;
+
+    try {
+        const response = await fetch(`${apiUrl}/${selectedId}`, {
+            method: 'DELETE',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            }
+        });
+
+        if (response.ok) {
+            alert("Asistencia eliminada correctamente.");
+            loadTable();
+            $('#deleteConfirmModal').modal('hide');
+        } else {
+            console.error("Error al eliminar la asistencia:", response.statusText);
+        }
+    } catch (error) {
+        console.error("Error al conectar con la API:", error);
+    }
+}
+
+        async function searchAsistencias(searchTerm) {
+            try {
+                const response = await fetch(`${apiUrl}/${searchTerm}`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                if (!response.ok) {
+                    console.error('Error al obtener los datos:', response.statusText);
                     return;
                 }
-                $('#deleteConfirmModal').modal('show');
-            }
 
-            function confirmDelete() {
-                if (selectedClave === null) return;
+                const asistencia = await response.json();
 
-                const index = asistenciaData.findIndex(item => item.clave === selectedClave);
-                if (index !== -1) {
-                    asistenciaData.splice(index, 1);
-                    loadTable();
-                    $('#deleteConfirmModal').modal('hide');
-                    selectedClave = null;
-                    document.querySelector('.btn-editar').disabled = true;
-                    document.querySelector('.btn-eliminar').disabled = true;
+                const tableBody = document.getElementById('tableBody');
+                tableBody.innerHTML = '';
+
+                if (Array.isArray(asistencia)) {
+                    asistencia.forEach(asistencia => {
+                        const row = document.createElement('tr');
+                        row.onclick = () => selectRow(asistencia.clave, row);
+                        row.className = 'table-row';
+                        row.innerHTML = `
+                            <th scope="row">${asistencia.clave}</th>
+                            <td>${asistencia.claveEmpleado}</td>
+                            <td>${asistencia.fecha}</td>
+                            <td>${asistencia.hora}</td>
+                            <td>${asistencia.tipoAsistencia}</td>
+                        `;
+                        tableBody.appendChild(row);
+                    });
+                } else {
+                    const row = document.createElement('tr');
+                    row.onclick = () => selectRow(asistencia.clave, row);
+                    row.className = 'table-row';
+                    row.innerHTML = `
+                        <th scope="row">${asistencia.clave}</th>
+                        <td>${asistencia.claveEmpleado}</td>
+                        <td>${asistencia.fecha}</td>
+                        <td>${asistencia.hora}</td>
+                        <td>${asistencia.tipoAsistencia}</td>
+                    `;
+                    tableBody.appendChild(row);
                 }
+            } catch (error) {
+                console.error('Error al conectar con la API:', error);
             }
-        </script>
-    </body>
+        }
+
+        document.getElementById('buscar').addEventListener('input', function () {
+            const searchTerm = document.getElementById('buscar').value.toLowerCase();
+
+            if (searchTerm === '') {
+                loadTable();
+            }
+        });
+    </script>
+
+</body>
+
 </html>

@@ -30,11 +30,12 @@
     <table class="table" id="materialTable">
         <thead>
             <tr class="table-row">
-                <th scope="col">ID</th>
+                <th scope="col">Clave</th>
                 <th scope="col">Nombre</th>
-                <th scope="col">Categoría</th>
-                <th scope="col">Cantidad</th>
-                <th scope="col">Precio Unitario</th>
+                <th scope="col">Existencia</th>
+                <th scope="col">Descripción</th>
+                <th scope="col">Unidad de Medida</th>
+                <th scope="col">Estado</th>
             </tr>
         </thead>
         <tbody id="tableBody">
@@ -68,20 +69,31 @@
             <div class="modal-body">
                 <form id="addForm">
                     <div class="form-group">
+                        <label for="addClave">Clave</label>
+                        <input type="number" class="form-control" id="addClave" required>
+                    </div>
+                    <div class="form-group">
                         <label for="addNombre">Nombre</label>
                         <input type="text" class="form-control" id="addNombre" required>
                     </div>
                     <div class="form-group">
-                        <label for="addCategoria">Categoría</label>
-                        <input type="text" class="form-control" id="addCategoria" required>
+                        <label for="addExistencia">Existencia</label>
+                        <input type="number" class="form-control" id="addExistencia" required>
                     </div>
                     <div class="form-group">
-                        <label for="addCantidad">Cantidad</label>
-                        <input type="number" class="form-control" id="addCantidad" required>
+                        <label for="addDescripcion">Descripción</label>
+                        <textarea class="form-control" id="addDescripcion"></textarea>
                     </div>
                     <div class="form-group">
-                        <label for="addPrecio">Precio Unitario</label>
-                        <input type="number" class="form-control" id="addPrecio" step="0.01" required>
+                        <label for="addUnidadMedida">Unidad de Medida</label>
+                        <input type="text" class="form-control" id="addUnidadMedida" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="addEstado">Estado</label>
+                        <select class="form-control" id="addEstado">
+                            <option value="true">Activo</option>
+                            <option value="false">Inactivo</option>
+                        </select>
                     </div>
                 </form>
             </div>
@@ -106,24 +118,31 @@
             <div class="modal-body">
                 <form id="editForm">
                     <div class="form-group">
-                        <label for="id">ID</label>
-                        <input type="text" class="form-control" id="id" readonly>
+                        <label for="editClave">Clave</label>
+                        <input type="text" class="form-control" id="editClave" readonly>
                     </div>
                     <div class="form-group">
-                        <label for="nombre">Nombre</label>
-                        <input type="text" class="form-control" id="nombre">
+                        <label for="editNombre">Nombre</label>
+                        <input type="text" class="form-control" id="editNombre">
                     </div>
                     <div class="form-group">
-                        <label for="categoria">Categoría</label>
-                        <input type="text" class="form-control" id="categoria">
+                        <label for="editExistencia">Existencia</label>
+                        <input type="number" class="form-control" id="editExistencia">
                     </div>
                     <div class="form-group">
-                        <label for="cantidad">Cantidad</label>
-                        <input type="number" class="form-control" id="cantidad">
+                        <label for="editDescripcion">Descripción</label>
+                        <textarea class="form-control" id="editDescripcion"></textarea>
                     </div>
                     <div class="form-group">
-                        <label for="precio">Precio Unitario</label>
-                        <input type="number" class="form-control" id="precio" step="0.01">
+                        <label for="editUnidadMedida">Unidad de Medida</label>
+                        <input type="text" class="form-control" id="editUnidadMedida">
+                    </div>
+                    <div class="form-group">
+                        <label for="editEstado">Estado</label>
+                        <select class="form-control" id="editEstado">
+                            <option value="true">Activo</option>
+                            <option value="false">Inactivo</option>
+                        </select>
                     </div>
                 </form>
             </div>
@@ -161,101 +180,99 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="../JS/NavBar.js"></script>
 </body>
-
+<script src="../JS/Materiales.js"></script>
 <script>
     // Simulated database
 let materials = [
-    { id: 1, name: 'Madera', category: 'Construcción', quantity: 50, price: 100.0 },
-    { id: 2, name: 'Clavos', category: 'Ferretería', quantity: 500, price: 0.5 },
-    { id: 3, name: 'Cemento', category: 'Construcción', quantity: 30, price: 250.0 },
+    { clave: 1, nombre: 'Madera', existencia: 50, descripcion: 'Madera tratada', unidadMedida: 'Piezas', estado: true },
+    { clave: 2, nombre: 'Clavos', existencia: 500, descripcion: 'Clavos de acero', unidadMedida: 'Kilogramos', estado: true },
+    { clave: 3, nombre: 'Cemento', existencia: 30, descripcion: 'Cemento Portland', unidadMedida: 'Sacos', estado: true },
+    { clave: 4, nombre: 'Ladrillos', existencia: 1000, descripcion: 'Ladrillos de barro', unidadMedida: 'Piezas', estado: false },
 ];
 
-// Render materials in the table
+let selectedMaterialId = null;
+
+// Render table
 function renderMaterials() {
     const tableBody = document.getElementById('tableBody');
     tableBody.innerHTML = '';
+
     materials.forEach((material) => {
         const row = document.createElement('tr');
+        row.classList.add('table-row');
+        row.setAttribute('data-id', material.clave);
+        row.addEventListener('click', () => selectMaterial(material.clave));
+
         row.innerHTML = `
-            <td>${material.id}</td>
-            <td>${material.name}</td>
-            <td>${material.category}</td>
-            <td>${material.quantity}</td>
-            <td>${material.price.toFixed(2)}</td>
+            <td>${material.clave}</td>
+            <td>${material.nombre}</td>
+            <td>${material.existencia}</td>
+            <td>${material.descripcion}</td>
+            <td>${material.unidadMedida}</td>
+            <td>${material.estado ? 'Activo' : 'Inactivo'}</td>
         `;
-        row.addEventListener('click', () => selectRow(row, material.id));
+
         tableBody.appendChild(row);
     });
 }
 
-// Select a row
-let selectedMaterialId = null;
-function selectRow(row, id) {
-    document.querySelectorAll('#tableBody tr').forEach((tr) => tr.classList.remove('selected'));
-    row.classList.add('selected');
-    selectedMaterialId = id;
+// Select material
+function selectMaterial(clave) {
+    selectedMaterialId = clave;
     document.querySelector('.btn-editar').disabled = false;
     document.querySelector('.btn-eliminar').disabled = false;
 }
 
-// Add new material
+// Save new material
 function saveNewMaterial() {
-    const name = document.getElementById('addNombre').value;
-    const category = document.getElementById('addCategoria').value;
-    const quantity = parseInt(document.getElementById('addCantidad').value);
-    const price = parseFloat(document.getElementById('addPrecio').value);
-
-    if (name && category && quantity && price) {
-        const newMaterial = {
-            id: materials.length ? materials[materials.length - 1].id + 1 : 1,
-            name,
-            category,
-            quantity,
-            price,
-        };
-        materials.push(newMaterial);
-        renderMaterials();
-        $('#addModal').modal('hide');
-    }
+    const newMaterial = {
+        clave: materials.length + 1,
+        nombre: document.getElementById('addNombre').value,
+        existencia: parseInt(document.getElementById('addExistencia').value, 10),
+        descripcion: document.getElementById('addDescripcion').value,
+        unidadMedida: document.getElementById('addUnidadMedida').value,
+        estado: document.getElementById('addEstado').value === 'true',
+    };
+    materials.push(newMaterial);
+    renderMaterials();
+    $('#addModal').modal('hide');
 }
 
 // Open edit modal
 function openEditModal() {
-    const material = materials.find((m) => m.id === selectedMaterialId);
-    if (material) {
-        document.getElementById('id').value = material.id;
-        document.getElementById('nombre').value = material.name;
-        document.getElementById('categoria').value = material.category;
-        document.getElementById('cantidad').value = material.quantity;
-        document.getElementById('precio').value = material.price;
-        $('#editModal').modal('show');
-    }
+    const material = materials.find((m) => m.clave === selectedMaterialId);
+    if (!material) return;
+
+    document.getElementById('editClave').value = material.clave;
+    document.getElementById('editNombre').value = material.nombre;
+    document.getElementById('editExistencia').value = material.existencia;
+    document.getElementById('editDescripcion').value = material.descripcion;
+    document.getElementById('editUnidadMedida').value = material.unidadMedida;
+    document.getElementById('editEstado').value = material.estado ? 'true' : 'false';
+    $('#editModal').modal('show');
 }
 
-// Save changes after editing
+// Save edited material
 function saveChanges() {
-    const id = parseInt(document.getElementById('id').value);
-    const name = document.getElementById('nombre').value;
-    const category = document.getElementById('categoria').value;
-    const quantity = parseInt(document.getElementById('cantidad').value);
-    const price = parseFloat(document.getElementById('precio').value);
-
-    const materialIndex = materials.findIndex((m) => m.id === id);
-    if (materialIndex > -1) {
-        materials[materialIndex] = { id, name, category, quantity, price };
-        renderMaterials();
-        $('#editModal').modal('hide');
-    }
+    const clave = parseInt(document.getElementById('editClave').value, 10);
+    const material = materials.find((m) => m.clave === clave);
+    material.nombre = document.getElementById('editNombre').value;
+    material.existencia = parseInt(document.getElementById('editExistencia').value, 10);
+    material.descripcion = document.getElementById('editDescripcion').value;
+    material.unidadMedida = document.getElementById('editUnidadMedida').value;
+    material.estado = document.getElementById('editEstado').value === 'true';
+    renderMaterials();
+    $('#editModal').modal('hide');
 }
 
-// Delete material
+// Delete selected material
 function deleteRow() {
     $('#deleteConfirmModal').modal('show');
 }
 
 // Confirm delete
 function confirmDelete() {
-    materials = materials.filter((m) => m.id !== selectedMaterialId);
+    materials = materials.filter((m) => m.clave !== selectedMaterialId);
     renderMaterials();
     selectedMaterialId = null;
     document.querySelector('.btn-editar').disabled = true;
@@ -263,31 +280,7 @@ function confirmDelete() {
     $('#deleteConfirmModal').modal('hide');
 }
 
-// Search materials
-document.getElementById('buscar').addEventListener('input', (e) => {
-    const query = e.target.value.toLowerCase();
-    const filteredMaterials = materials.filter((m) =>
-        m.name.toLowerCase().includes(query) ||
-        m.category.toLowerCase().includes(query)
-    );
-    const tableBody = document.getElementById('tableBody');
-    tableBody.innerHTML = '';
-    filteredMaterials.forEach((material) => {
-        const row = document.createElement('tr');
-        row.innerHTML = `
-            <td>${material.id}</td>
-            <td>${material.name}</td>
-            <td>${material.category}</td>
-            <td>${material.quantity}</td>
-            <td>${material.price.toFixed(2)}</td>
-        `;
-        row.addEventListener('click', () => selectRow(row, material.id));
-        tableBody.appendChild(row);
-    });
-});
-
-// Initial rendering
+// Initial render
 renderMaterials();
-
 </script>
 </html>

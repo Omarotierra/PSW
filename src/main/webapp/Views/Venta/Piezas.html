@@ -1,239 +1,242 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Registrar Pieza</title>
-        <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-        <link rel="stylesheet" href="../CSS/Piezas.css"> 
-    </head>
-    <body>
-        <div id="navbar"></div>
-        <div class="container mt-5">
-            <div class="row">
-                <div class="col-md-12">
-                    <h1 class="text-center">Piezas</h1>
-                </div>
-            </div>
-            <div class="form-group input-group">
-                <input type="search" class="form-control" id="buscar" placeholder="Buscar" clearable>
-                <button class="btn btn-buscar" id="buscarBtn">
-                    Buscar 
-                    <i class="fas fa-search"></i>
-                </button>
-            </div>
-            <hr class="divider">
 
-            <table class="table" id="productosTable">
-                <thead>
-                    <tr class="table-row">
-                        <th scope="col">Clave</th>
-                        <th scope="col">Nombre</th>
-                        <th scope="col">Descripción</th>
-                        <th scope="col">Costo</th>
-                        <th scope="col">Existencia</th>
-                        <th scope="col">Estado</th>
-                    </tr>
-                </thead>
-                <tbody id="tableBody">
-                    <!-- Filas dinámicas irán aquí -->
-                </tbody>
-            </table>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registrar Pieza</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="../CSS/Piezas.css">
+</head>
 
-            <div class="text-right">
-                <button class="btn btn-agregar" data-toggle="modal" data-target="#addModal">
-                    <i class="fas fa-plus"></i> Agregar
-                </button>
-                <button class="btn btn-editar" onclick="openEditModal()" id="editBtn" disabled>
-                    <i class="fas fa-edit"></i> Editar
-                </button>
-                <button class="btn btn-eliminar" onclick="deleteRow()" id="deleteBtn" disabled>
-                    <i class="fas fa-trash"></i> Eliminar
-                </button>
+<body>
+    <div id="navbar"></div>
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-md-12">
+                <h1 class="text-center">Piezas</h1>
             </div>
+        </div>
+        <div class="form-group input-group">
+            <input type="search" class="form-control" id="buscar" placeholder="Buscar" clearable>
+            <button class="btn btn-buscar" id="buscarBtn">
+                Buscar
+                <i class="fas fa-search"></i>
+            </button>
+        </div>
+        <hr class="divider">
 
-            <!-- Modal de Agregar Pieza -->
-            <div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="addModalLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="addModalLabel">Agregar Nuevo Producto</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <form id="addForm">
-                                <div class="form-group">
-                                    <label for="addClave">Clave</label>
-                                    <input type="number" class="form-control" id="addClave" required>
-                                </div>
-                                <div class="form-group">
-                                    <label for="addNombre">Nombre</label>
-                                    <input type="text" class="form-control" id="addNombre" required>
-                                </div>
-                                <div class="form-group">
-                                    <label for="addDescripcion">Descripción </label>
-                                    <input type="text" class="form-control" id="addDescripcion" required>
-                                </div>
-                                <div class="form-group">
-                                    <label for="addCosto">Costo</label>
-                                    <input type="number" class="form-control" id="addCosto" required>
-                                </div>
-                                <div class="form-group">
-                                    <label for="addExistencia">Existencia</label>
-                                    <input type="number" class="form-control" id="addExistencia" required>
-                                </div>
-                                <div class="form-group">
-                                    <label for="addEstado">Estado</label>
-                                    <select class="form-control" id="addEstado" required>
-                                        <option value="true">Activo</option>
-                                        <option value="false">Inactivo</option>
-                                    </select>
-                                </div>
-                            </form>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                            <button type="button" class="btn btn-primary" onclick="saveNewPieza()">Guardar Producto</button>
-                        </div>
+        <table class="table" id="productosTable">
+            <thead>
+                <tr class="table-row">
+                    <th scope="col">Clave</th>
+                    <th scope="col">Nombre</th>
+                    <th scope="col">Descripción</th>
+                    <th scope="col">Costo</th>
+                    <th scope="col">Existencia</th>
+                    <th scope="col">Estado</th>
+                </tr>
+            </thead>
+            <tbody id="tableBody">
+                <!-- Filas dinámicas irán aquí -->
+            </tbody>
+        </table>
+
+        <div class="text-right">
+            <button class="btn btn-agregar" data-toggle="modal" data-target="#addModal">
+                <i class="fas fa-plus"></i> Agregar
+            </button>
+            <button class="btn btn-editar" onclick="openEditModal()" id="editBtn" disabled>
+                <i class="fas fa-edit"></i> Editar
+            </button>
+            <button class="btn btn-eliminar" onclick="deleteRow()" id="deleteBtn" disabled>
+                <i class="fas fa-trash"></i> Eliminar
+            </button>
+        </div>
+
+        <!-- Modal de Agregar Pieza -->
+        <div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="addModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="addModalLabel">Agregar Nuevo Producto</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="addForm">
+                            <div class="form-group">
+                                <label for="addClave">Clave</label>
+                                <input type="number" class="form-control" id="addClave" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="addNombre">Nombre</label>
+                                <input type="text" class="form-control" id="addNombre" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="addDescripcion">Descripción </label>
+                                <input type="text" class="form-control" id="addDescripcion" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="addCosto">Costo</label>
+                                <input type="number" class="form-control" id="addCosto" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="addExistencia">Existencia</label>
+                                <input type="number" class="form-control" id="addExistencia" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="addEstado">Estado</label>
+                                <select class="form-control" id="addEstado" required>
+                                    <option value="true">Activo</option>
+                                    <option value="false">Inactivo</option>
+                                </select>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                        <button type="button" class="btn btn-primary" onclick="saveNewPieza()">Guardar Producto</button>
                     </div>
                 </div>
             </div>
+        </div>
 
-            <!-- Modal de Edición -->
-            <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="editModalLabel">Editar Producto</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <form id="editForm">
-                                <div class="form-group">
-                                    <label for="id">ID</label>
-                                    <input type="text" class="form-control" id="id" readonly>
-                                </div>
-                                <div class="form-group">
-                                    <label for="nombre">Nombre</label>
-                                    <input type="text" class="form-control" id="nombre">
-                                </div>
-                                <div class="form-group">
-                                    <label for="descripcion">Descripción</label>
-                                    <input type="text" class="form-control" id="descripcion">
-                                </div>
-                                <div class="form-group">
-                                    <label for="costo">Costo</label>
-                                    <input type="number" class="form-control" id="costo" required>
-                                </div>
-                                <div class="form-group">
-                                    <label for="existencia">Existencia</label>
-                                    <input type="number" class="form-control" id="existencia" required>
-                                </div>
-                                <div class="form-group">
-                                    <label for="estado">Estado</label>
-                                    <select class="form-control" id="estado" required>
-                                        <option value="true">Activo</option>
-                                        <option value="false">Inactivo</option>
-                                    </select>
-                                </div>
+        <!-- Modal de Edición -->
+        <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="editModalLabel">Editar Producto</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="editForm">
+                            <div class="form-group">
+                                <label for="id">ID</label>
+                                <input type="text" class="form-control" id="id" readonly>
+                            </div>
+                            <div class="form-group">
+                                <label for="nombre">Nombre</label>
+                                <input type="text" class="form-control" id="nombre">
+                            </div>
+                            <div class="form-group">
+                                <label for="descripcion">Descripción</label>
+                                <input type="text" class="form-control" id="descripcion">
+                            </div>
+                            <div class="form-group">
+                                <label for="costo">Costo</label>
+                                <input type="number" class="form-control" id="costo" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="existencia">Existencia</label>
+                                <input type="number" class="form-control" id="existencia" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="estado">Estado</label>
+                                <select class="form-control" id="estado" required>
+                                    <option value="true">Activo</option>
+                                    <option value="false">Inactivo</option>
+                                </select>
+                            </div>
 
-                            </form>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                            <button type="button" class="btn btn-primary" onclick="saveChanges()">Guardar Cambios</button>
-                        </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                        <button type="button" class="btn btn-primary" onclick="saveChanges()">Guardar Cambios</button>
                     </div>
                 </div>
             </div>
+        </div>
 
-            <!-- Modal de Confirmación -->
-            <div class="modal fade" id="deleteConfirmModal" tabindex="-1" aria-labelledby="deleteConfirmModalLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="deleteConfirmModalLabel">Confirmar Eliminación</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            ¿Estás seguro de que deseas eliminar la pieza seleccionada?
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                            <button type="button" class="btn btn-danger" id="confirmDeleteBtn">Eliminar</button>
-                        </div>
+        <!-- Modal de Confirmación -->
+        <div class="modal fade" id="deleteConfirmModal" tabindex="-1" aria-labelledby="deleteConfirmModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="deleteConfirmModalLabel">Confirmar Eliminación</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        ¿Estás seguro de que deseas eliminar la pieza seleccionada?
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                        <button type="button" class="btn btn-danger" id="confirmDeleteBtn">Eliminar</button>
                     </div>
                 </div>
             </div>
+        </div>
 
 
-            <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-            <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
-            <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-            <script src="../JS/NavBar.js"></script> 
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+        <script src="../JS/NavBar.js"></script>
 
 
-            <script>
-                                const apiUrl = "http://localhost:8081/api/piezas";
-                                const token = localStorage.getItem('token');
-                                console.log('Token:', token);
+        <script>
+            const apiUrl = "http://localhost:8081/api/piezas";
+            const token = localStorage.getItem('token');
+            console.log('Token:', token);
 
-                                let selectedId = null;
+            let selectedId = null;
 
-                                function obtenerDatos() {
-                                    const token = localStorage.getItem('token');
-                                    if (!token) {
-                                        console.error('No se encontró el token en el localStorage.');
-                                        return;
-                                    }
+            function obtenerDatos() {
+                const token = localStorage.getItem('token');
+                if (!token) {
+                    console.error('No se encontró el token en el localStorage.');
+                    return;
+                }
 
-                                    fetch('http://localhost:8081/api/piezas', {
-                                        method: 'GET',
-                                        headers: {
-                                            'Authorization': `Bearer ${token}`,
-                                            'Content-Type': 'application/json'
-                                        }
-                                    })
-                                            .then(response => {
-                                                if (!response.ok) {
-                                                    throw new Error(`HTTP error! status: ${response.status}`);
-                                                }
-                                                return response.json();
-                                            })
-                                            .then(data => {
-                                                console.log('Datos cargados:', data);
-                                            })
-                                            .catch(error => {
-                                                console.error('Error al cargar los datos:', error);
-                                            });
-                                }
-                                document.addEventListener('DOMContentLoaded', obtenerDatos);
+                fetch('http://localhost:8081/api/piezas', {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    }
+                })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error(`HTTP error! status: ${response.status}`);
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        console.log('Datos cargados:', data);
+                    })
+                    .catch(error => {
+                        console.error('Error al cargar los datos:', error);
+                    });
+            }
+            document.addEventListener('DOMContentLoaded', obtenerDatos);
 
-                                async function loadTable() {
-                                    try {
-                                        const response = await fetch(apiUrl, {
-                                            headers: {
-                                                'Authorization': `Bearer ${token}`,
-                                                'Content-Type': 'application/json'
-                                            }
-                                        });
-                                        const data = await response.json();
+            async function loadTable() {
+                try {
+                    const response = await fetch(apiUrl, {
+                        headers: {
+                            'Authorization': `Bearer ${token}`,
+                            'Content-Type': 'application/json'
+                        }
+                    });
+                    const data = await response.json();
 
-                                        const tableBody = document.getElementById('tableBody');
-                                        tableBody.innerHTML = ''; 
+                    const tableBody = document.getElementById('tableBody');
+                    tableBody.innerHTML = '';
 
-                                        data.forEach((pieza) => {
-                                            const row = document.createElement('tr');
-                                            row.onclick = () => selectRow(pieza.clave, row);
-                                            row.className = 'table-row';
-                                            row.innerHTML = `
+                    data.forEach((pieza) => {
+                        const row = document.createElement('tr');
+                        row.onclick = () => selectRow(pieza.clave, row);
+                        row.className = 'table-row';
+                        row.innerHTML = `
                 <th scope="row">${pieza.clave}</th>
                 <td>${pieza.nombre}</td>
                 <td>${pieza.descripcion}</td>
@@ -241,200 +244,200 @@
                 <td>${pieza.existencia}</td>
                 <td>${pieza.estado ? 'Activo' : 'Inactivo'}</td>
             `;
-                                            tableBody.appendChild(row);
-                                        });
-                                    } catch (error) {
-                                        console.error("Error al cargar los datos:", error);
-                                    }
-                                }
+                        tableBody.appendChild(row);
+                    });
+                } catch (error) {
+                    console.error("Error al cargar los datos:", error);
+                }
+            }
 
-                                document.addEventListener('DOMContentLoaded', loadTable);
-
-
-                                function selectRow(id, row) {
-                                    const rows = document.querySelectorAll('#productosTable tbody tr');
-                                    rows.forEach(r => r.classList.remove('table-active'));
-                                    row.classList.add('table-active');
-                                    selectedId = id;
-                                    document.querySelector('.btn-editar').disabled = false;
-                                    document.querySelector('.btn-eliminar').disabled = false;
-                                }
-
-                                async function saveNewPieza() {
-                                    const nuevaPieza = {
-                                        clave: parseInt(document.getElementById('addClave').value),
-                                        nombre: document.getElementById('addNombre').value,
-                                        descripcion: document.getElementById('addDescripcion').value,
-                                        costo: parseFloat(document.getElementById('addCosto').value),
-                                        existencia: parseInt(document.getElementById('addExistencia').value),
-                                        estado: true 
-                                    };
-
-                                    try {
-                                        const response = await fetch(apiUrl, {
-                                            method: 'POST',
-                                            headers: {
-                                                'Authorization': `Bearer ${token}`,
-                                                'Content-Type': 'application/json'
-                                            },
-                                            body: JSON.stringify(nuevaPieza)
-                                        });
-
-                                        if (response.ok) {
-                                            loadTable();
-                                            $('#addModal').modal('hide');
-                                            document.getElementById('addForm').reset();
-                                        } else {
-                                            console.error("Error al guardar la nueva pieza:", response.statusText);
-                                        }
-                                    } catch (error) {
-                                        console.error("Error al conectar con la API:", error);
-                                    }
-                                }
+            document.addEventListener('DOMContentLoaded', loadTable);
 
 
-                                async function openEditModal() {
-                                    if (!selectedId)
-                                        return;
+            function selectRow(id, row) {
+                const rows = document.querySelectorAll('#productosTable tbody tr');
+                rows.forEach(r => r.classList.remove('table-active'));
+                row.classList.add('table-active');
+                selectedId = id;
+                document.querySelector('.btn-editar').disabled = false;
+                document.querySelector('.btn-eliminar').disabled = false;
+            }
 
-                                    try {
+            async function saveNewPieza() {
+                const nuevaPieza = {
+                    clave: parseInt(document.getElementById('addClave').value),
+                    nombre: document.getElementById('addNombre').value,
+                    descripcion: document.getElementById('addDescripcion').value,
+                    costo: parseFloat(document.getElementById('addCosto').value),
+                    existencia: parseInt(document.getElementById('addExistencia').value),
+                    estado: true
+                };
 
-                                        const response = await fetch(`${apiUrl}/${selectedId}`, {
-                                            headers: {
-                                                'Authorization': `Bearer ${token}`,
-                                                'Content-Type': 'application/json'
-                                            }
-                                        });
+                try {
+                    const response = await fetch(apiUrl, {
+                        method: 'POST',
+                        headers: {
+                            'Authorization': `Bearer ${token}`,
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(nuevaPieza)
+                    });
 
-                                        if (!response.ok) {
-                                            console.error(`Error al obtener los datos: ${response.statusText}`);
-                                            return;
-                                        }
-
-                                        const pieza = await response.json();
-
-                                        document.getElementById('id').value = pieza.clave;
-                                        document.getElementById('nombre').value = pieza.nombre;
-                                        document.getElementById('descripcion').value = pieza.descripcion;
-                                        document.getElementById('costo').value = pieza.costo;
-                                        document.getElementById('existencia').value = pieza.existencia;
-                                        document.getElementById('estado').value = pieza.estado ? "true" : "false";
-
-                                        $('#editModal').modal('show');
-                                    } catch (error) {
-                                        console.error("Error al obtener los datos de la pieza:", error);
-                                    }
-                                }
-
-
-                                async function saveChanges() {
-                                    const id = document.getElementById('id').value;
-                                    const updatedPieza = {
-                                        nombre: document.getElementById('nombre').value,
-                                        descripcion: document.getElementById('descripcion').value,
-                                        costo: parseFloat(document.getElementById('costo').value),
-                                        existencia: parseInt(document.getElementById('existencia').value),
-                                        estado: document.getElementById('estado').value === 'true'
-                                    };
-
-                                    try {
-                                        const response = await fetch(`${apiUrl}/${id}`, {
-                                            method: 'PUT',
-                                            headers: {
-                                                'Authorization': `Bearer ${token}`,
-                                                'Content-Type': 'application/json'
-                                            },
-                                            body: JSON.stringify(updatedPieza)
-                                        });
-
-                                        console.log(response);
-                                        if (response.ok) {
-                                            loadTable();
-                                            $('#editModal').modal('hide');
-                                        } else {
-                                            console.error("Error al guardar los cambios:", response.statusText);
-                                        }
-                                    } catch (error) {
-                                        console.error("Error al conectar con la API:", error);
-                                    }
-                                }
+                    if (response.ok) {
+                        loadTable();
+                        $('#addModal').modal('hide');
+                        document.getElementById('addForm').reset();
+                    } else {
+                        console.error("Error al guardar la nueva pieza:", response.statusText);
+                    }
+                } catch (error) {
+                    console.error("Error al conectar con la API:", error);
+                }
+            }
 
 
-                                function deleteRow() {
-                                    if (!selectedId) {
-                                        alert("Selecciona una pieza primero.");
-                                        return;
-                                    }
+            async function openEditModal() {
+                if (!selectedId)
+                    return;
 
-                                    $('#deleteConfirmModal').modal('show');
-                                }
+                try {
 
-                                async function confirmDelete() {
-                                    if (!selectedId) {
-                                        alert("No se ha seleccionado ninguna pieza.");
-                                        return;
-                                    }
+                    const response = await fetch(`${apiUrl}/${selectedId}`, {
+                        headers: {
+                            'Authorization': `Bearer ${token}`,
+                            'Content-Type': 'application/json'
+                        }
+                    });
 
-                                    const token = localStorage.getItem('token');
-                                    if (!token) {
-                                        console.error('No se encontró el token en el localStorage.');
-                                        return;
-                                    }
+                    if (!response.ok) {
+                        console.error(`Error al obtener los datos: ${response.statusText}`);
+                        return;
+                    }
 
-                                    try {
-                                        // Realizar la solicitud DELETE con el token
-                                        const response = await fetch(`${apiUrl}/${selectedId}`, {
-                                            method: 'DELETE',
-                                            headers: {
-                                                'Authorization': `Bearer ${token}`,
-                                                'Content-Type': 'application/json'
-                                            }
-                                        });
+                    const pieza = await response.json();
 
-                                        if (response.ok) {
-                                            alert("Pieza eliminada correctamente.");
-                                            loadTable(); // Recargar la tabla después de eliminar
-                                            $('#deleteConfirmModal').modal('hide'); // Cerrar el modal
-                                        } else {
-                                            console.error("Error al eliminar la pieza:", response.statusText);
-                                        }
-                                    } catch (error) {
-                                        console.error("Error al conectar con la API:", error);
-                                    }
-                                }
+                    document.getElementById('id').value = pieza.clave;
+                    document.getElementById('nombre').value = pieza.nombre;
+                    document.getElementById('descripcion').value = pieza.descripcion;
+                    document.getElementById('costo').value = pieza.costo;
+                    document.getElementById('existencia').value = pieza.existencia;
+                    document.getElementById('estado').value = pieza.estado ? "true" : "false";
 
-                                document.getElementById('confirmDeleteBtn').addEventListener('click', confirmDelete);
+                    $('#editModal').modal('show');
+                } catch (error) {
+                    console.error("Error al obtener los datos de la pieza:", error);
+                }
+            }
 
-                                document.getElementById('buscarBtn').addEventListener('click', function () {
-                                    const searchTerm = document.getElementById('buscar').value.toLowerCase();  // Obtener el valor del input
-                                    searchPieces(searchTerm);
-                                });
 
-                                async function searchPieces(searchTerm) {
-                                    try {
-                                        const response = await fetch(`${apiUrl}/${searchTerm}`, {
-                                            headers: {
-                                                'Authorization': `Bearer ${token}`,
-                                                'Content-Type': 'application/json'
-                                            }
-                                        });
+            async function saveChanges() {
+                const id = document.getElementById('id').value;
+                const updatedPieza = {
+                    nombre: document.getElementById('nombre').value,
+                    descripcion: document.getElementById('descripcion').value,
+                    costo: parseFloat(document.getElementById('costo').value),
+                    existencia: parseInt(document.getElementById('existencia').value),
+                    estado: document.getElementById('estado').value === 'true'
+                };
 
-                                        if (!response.ok) {
-                                            console.error('Error al obtener los datos:', response.statusText);
-                                            return;
-                                        }
+                try {
+                    const response = await fetch(`${apiUrl}/${id}`, {
+                        method: 'PUT',
+                        headers: {
+                            'Authorization': `Bearer ${token}`,
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(updatedPieza)
+                    });
 
-                                        const pieza = await response.json();
+                    console.log(response);
+                    if (response.ok) {
+                        loadTable();
+                        $('#editModal').modal('hide');
+                    } else {
+                        console.error("Error al guardar los cambios:", response.statusText);
+                    }
+                } catch (error) {
+                    console.error("Error al conectar con la API:", error);
+                }
+            }
 
-                                        const tableBody = document.getElementById('tableBody');
-                                        tableBody.innerHTML = '';
 
-                                        if (Array.isArray(pieza)) {
-                                            pieza.forEach(pieza => {
-                                                const row = document.createElement('tr');
-                                                row.onclick = () => selectRow(pieza.clave, row);
-                                                row.className = 'table-row';
-                                                row.innerHTML = `
+            function deleteRow() {
+                if (!selectedId) {
+                    alert("Selecciona una pieza primero.");
+                    return;
+                }
+
+                $('#deleteConfirmModal').modal('show');
+            }
+
+            async function confirmDelete() {
+                if (!selectedId) {
+                    alert("No se ha seleccionado ninguna pieza.");
+                    return;
+                }
+
+                const token = localStorage.getItem('token');
+                if (!token) {
+                    console.error('No se encontró el token en el localStorage.');
+                    return;
+                }
+
+                try {
+                    // Realizar la solicitud DELETE con el token
+                    const response = await fetch(`${apiUrl}/${selectedId}`, {
+                        method: 'DELETE',
+                        headers: {
+                            'Authorization': `Bearer ${token}`,
+                            'Content-Type': 'application/json'
+                        }
+                    });
+
+                    if (response.ok) {
+                        alert("Pieza eliminada correctamente.");
+                        loadTable(); // Recargar la tabla después de eliminar
+                        $('#deleteConfirmModal').modal('hide'); // Cerrar el modal
+                    } else {
+                        console.error("Error al eliminar la pieza:", response.statusText);
+                    }
+                } catch (error) {
+                    console.error("Error al conectar con la API:", error);
+                }
+            }
+
+            document.getElementById('confirmDeleteBtn').addEventListener('click', confirmDelete);
+
+            document.getElementById('buscarBtn').addEventListener('click', function () {
+                const searchTerm = document.getElementById('buscar').value.toLowerCase();  // Obtener el valor del input
+                searchPieces(searchTerm);
+            });
+
+            async function searchPieces(searchTerm) {
+                try {
+                    const response = await fetch(`${apiUrl}/${searchTerm}`, {
+                        headers: {
+                            'Authorization': `Bearer ${token}`,
+                            'Content-Type': 'application/json'
+                        }
+                    });
+
+                    if (!response.ok) {
+                        console.error('Error al obtener los datos:', response.statusText);
+                        return;
+                    }
+
+                    const pieza = await response.json();
+
+                    const tableBody = document.getElementById('tableBody');
+                    tableBody.innerHTML = '';
+
+                    if (Array.isArray(pieza)) {
+                        pieza.forEach(pieza => {
+                            const row = document.createElement('tr');
+                            row.onclick = () => selectRow(pieza.clave, row);
+                            row.className = 'table-row';
+                            row.innerHTML = `
                     <th scope="row">${pieza.clave}</th>
                     <td>${pieza.nombre}</td>
                     <td>${pieza.descripcion}</td>
@@ -442,13 +445,13 @@
                     <td>${pieza.existencia}</td>
                     <td>${pieza.estado ? 'Activo' : 'Inactivo'}</td>
                 `;
-                                                tableBody.appendChild(row);
-                                            });
-                                        } else {
-                                            const row = document.createElement('tr');
-                                            row.onclick = () => selectRow(pieza.clave, row);
-                                            row.className = 'table-row';
-                                            row.innerHTML = `
+                            tableBody.appendChild(row);
+                        });
+                    } else {
+                        const row = document.createElement('tr');
+                        row.onclick = () => selectRow(pieza.clave, row);
+                        row.className = 'table-row';
+                        row.innerHTML = `
                 <th scope="row">${pieza.clave}</th>
                 <td>${pieza.nombre}</td>
                 <td>${pieza.descripcion}</td>
@@ -456,20 +459,21 @@
                 <td>${pieza.existencia}</td>
                 <td>${pieza.estado ? 'Activo' : 'Inactivo'}</td>
             `;
-                                            tableBody.appendChild(row);
-                                        }
-                                    } catch (error) {
-                                        console.error('Error al conectar con la API:', error);
-                                    }
-                                }
+                        tableBody.appendChild(row);
+                    }
+                } catch (error) {
+                    console.error('Error al conectar con la API:', error);
+                }
+            }
 
-                                document.getElementById('buscar').addEventListener('input', function () {
-                                    const searchTerm = document.getElementById('buscar').value.toLowerCase();
+            document.getElementById('buscar').addEventListener('input', function () {
+                const searchTerm = document.getElementById('buscar').value.toLowerCase();
 
-                                    if (searchTerm === '') {
-                                        loadTable();
-                                    }
-                                });
-            </script>
-    </body>
+                if (searchTerm === '') {
+                    loadTable();
+                }
+            });
+        </script>
+</body>
+
 </html>
