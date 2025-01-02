@@ -1,11 +1,17 @@
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     let basePath = '/PSW';
+    const token = localStorage.getItem('token');
 
+    if (!token) {
+        alert("Acceso no autorizado, inicie sesión o regístrese.");
+        window.location.href = 'http://localhost:8080/PSW/index.html';
+        return;
+    }
     if (window.location.hostname === 'localhost' && window.location.port === '8080') {
         if (window.location.pathname.includes('/PSW')) {
-            basePath = '/PSW'; 
+            basePath = '/PSW';
         } else {
-            basePath = '/PSW-1.0-SNAPSHOT'; 
+            basePath = '/PSW-1.0-SNAPSHOT';
         }
     } else {
         const pathParts = window.location.pathname.split('/');
@@ -20,7 +26,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav">
+                <ul class="navbar-nav mr-auto">
                     <!-- Principal -->
                     <li class="nav-item">
                         <a class="nav-link" href="${basePath}/Views/Principal/Principal.html">Inicio</a>
@@ -54,6 +60,7 @@ document.addEventListener('DOMContentLoaded', function() {
                             Recursos Humanos
                         </a>
                         <div class="dropdown-menu" aria-labelledby="rrhhDropdown">
+                            <a class="dropdown-item" href="${basePath}/Views/RRHH/Empleado.html">Empleados</a>
                             <a class="dropdown-item" href="${basePath}/Views/RRHH/EmpleadoPrestacion.html">Empleado Prestaciones</a>
                             <a class="dropdown-item" href="${basePath}/Views/RRHH/Prestaciones.html">Prestaciones</a>
                         </div>
@@ -83,8 +90,17 @@ document.addEventListener('DOMContentLoaded', function() {
                         </div>
                     </li>
                 </ul>
+                <button class="btn btn-danger" id="logoutButton">
+                    <i class="fas fa-sign-out-alt"></i> Cerrar sesión
+                </button>
             </div>
         </nav>
     `;
+
     document.getElementById('navbar').innerHTML = navbarHTML;
+
+    document.getElementById('logoutButton').addEventListener('click', function () {
+        localStorage.removeItem('token');
+        window.location.href = 'http://localhost:8080/PSW/';
+    });
 });

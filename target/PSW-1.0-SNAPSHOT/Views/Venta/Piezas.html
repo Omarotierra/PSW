@@ -39,7 +39,6 @@
                 </tr>
             </thead>
             <tbody id="tableBody">
-                <!-- Filas dinámicas irán aquí -->
             </tbody>
         </table>
 
@@ -475,5 +474,77 @@
             });
         </script>
 </body>
+<script>
+    let employees = [
+        { id: 1, name: "Juan", lastName: "Pérez", email: "juan.perez@example.com", phone: "555-1234" },
+    ];
+
+    function renderTable() {
+        const tbody = document.querySelector("table tbody");
+        tbody.innerHTML = "";
+        employees.forEach(employee => {
+            const row = document.createElement("tr");
+            row.innerHTML = `
+                <td>${employee.id}</td>
+                <td>${employee.name}</td>
+                <td>${employee.lastName}</td>
+                <td>${employee.email}</td>
+                <td>${employee.phone}</td>
+                <td>
+                    <button class="btn btn-warning btn-sm" onclick="openEditModal(${employee.id})">Editar</button>
+                    <button class="btn btn-danger btn-sm" onclick="openDeleteModal(${employee.id})">Eliminar</button>
+                </td>
+            `;
+            tbody.appendChild(row);
+        });
+    }
+
+    document.querySelector("#addEmployeeModal form").addEventListener("submit", function (e) {
+        e.preventDefault();
+        const name = document.getElementById("employeeName").value;
+        const lastName = document.getElementById("employeeLastName").value;
+        const email = document.getElementById("employeeEmail").value;
+        const phone = document.getElementById("employeePhone").value;
+
+        const newEmployee = {
+            id: employees.length > 0 ? employees[employees.length - 1].id + 1 : 1,
+            name,
+            lastName,
+            email,
+            phone,
+        };
+
+        employees.push(newEmployee);
+        renderTable();
+        document.querySelector("#addEmployeeModal .btn-close").click();
+    });
+
+    function openEditModal(id) {
+        const employee = employees.find(emp => emp.id === id);
+        document.getElementById("editEmployeeName").value = employee.name;
+        document.getElementById("editEmployeeLastName").value = employee.lastName;
+        document.getElementById("editEmployeeEmail").value = employee.email;
+        document.getElementById("editEmployeePhone").value = employee.phone;
+        document.querySelector("#editEmployeeModal form").onsubmit = function (e) {
+            e.preventDefault();
+            employee.name = document.getElementById("editEmployeeName").value;
+            employee.lastName = document.getElementById("editEmployeeLastName").value;
+            employee.email = document.getElementById("editEmployeeEmail").value;
+            employee.phone = document.getElementById("editEmployeePhone").value;
+            renderTable();
+            document.querySelector("#editEmployeeModal .btn-close").click();
+        };
+    }
+
+    function openDeleteModal(id) {
+        document.querySelector("#deleteEmployeeModal .btn-danger").onclick = function () {
+            employees = employees.filter(emp => emp.id !== id);
+            renderTable();
+            document.querySelector("#deleteEmployeeModal .btn-close").click();
+        };
+    }
+
+    renderTable();
+</script>
 
 </html>
